@@ -1,0 +1,2819 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0B0912">
+<meta name="description" content="Die Website der AK-Stufe 2027 am Gymnasium Werlte – Hoodie-Voting, Events und alles rund um unseren Abschluss.">
+<title>ABSCHLUSS 2027 · Gymnasium Werlte</title>
+<style>
+/* ==========================================================================
+   AK 2027 · Gymnasium Werlte — BASE / DESIGN SYSTEM
+   --------------------------------------------------------------------------
+   Farbpalette  · Typografie  · Abstände  · Radien  · Schatten  · Animation
+   Basiskomponenten: Navigation, Buttons, Hero, Marquee, Countdown, Toast
+   ========================================================================== */
+
+/* ---------- 1. Design Tokens ---------- */
+:root {
+  /* Farbe */
+  --bg:          #FAFAFA;
+  --surface:     #FFFFFF;
+  --ink:         #121212;
+  --ink-soft:    #595959;
+  --ink-faint:   #8A8A8A;
+  --line:        #E6E6E6;
+  --line-strong: #D6D6D6;
+
+  --violet:      #262626;
+  --violet-600:  #333333;
+  --violet-700:  #161616;
+  --violet-900:  #0A0A0A;
+  --violet-100:  #EBEBEB;
+  --violet-50:   #F5F5F5;
+  --lavender:    #A3A3A3;
+  --lavender-2:  #E2E2E2;
+
+  --dark:        #0A0A0A;
+  --dark-2:      #151515;
+  --dark-3:      #1E1E1E;
+  --success:     #16A34A;
+
+  /* Typografie */
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-body:    "Inter", system-ui, -apple-system, sans-serif;
+  --font-serif:   "Instrument Serif", Georgia, serif;
+
+  /* Abstand */
+  --sp-1: 4px;   --sp-2: 8px;   --sp-3: 12px;  --sp-4: 16px;
+  --sp-5: 24px;  --sp-6: 32px;  --sp-7: 48px;  --sp-8: 64px;
+  --sp-9: 96px;  --sp-10: 128px;
+
+  /* Radius */
+  --r-sm: 10px;  --r-md: 16px;  --r-lg: 24px;  --r-xl: 32px;  --r-pill: 999px;
+
+  /* Schatten */
+  --sh-1: 0 2px 8px  rgba(20, 10, 40, .05);
+  --sh-2: 0 24px 48px -18px rgba(20, 10, 40, .18);
+  --sh-3: 0 40px 80px -24px rgba(20, 10, 40, .28);
+  --glow: 0 8px 32px rgba(20, 20, 20, .30);
+  --glow-lg: 0 12px 60px rgba(20, 20, 20, .40);
+
+  /* Bewegung */
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+  --t-fast: .22s;  --t-med: .42s;  --t-slow: .75s;
+
+  --container: 1160px;
+}
+
+/* ---------- 2. Reset & Grundlagen ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 16.5px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--bg);
+  background-image:
+    radial-gradient(1100px 500px at 85% -5%, rgba(20,20,20,.05), transparent 60%),
+    radial-gradient(900px 460px at -10% 30%, rgba(20,20,20,.06), transparent 55%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+::selection { background: var(--violet); color: #fff; }
+
+::-webkit-scrollbar { width: 11px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: #B0B0B0; border-radius: 8px; border: 3px solid var(--bg); }
+::-webkit-scrollbar-thumb:hover { background: #000000; }
+
+:focus-visible {
+  outline: 2px solid var(--violet);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: fixed; top: -100px; left: 16px; z-index: 300;
+  background: var(--violet); color: #fff; padding: 12px 20px;
+  border-radius: var(--r-pill); font-weight: 600; transition: top .3s var(--ease);
+}
+.skip-link:focus { top: 16px; }
+
+/* ---------- 3. Layout-Utilities ---------- */
+.container {
+  width: min(var(--container), 92%);
+  margin-inline: auto;
+}
+
+.section {
+  padding: clamp(72px, 10vw, 130px) 0;
+  scroll-margin-top: 76px;
+  position: relative;
+}
+
+.section--tint {
+  background: linear-gradient(180deg, rgba(20,20,20,.03), rgba(20,20,20,.05) 45%, rgba(20,20,20,.025));
+  border-block: 1px solid var(--line);
+}
+
+.sec-head { max-width: 720px; margin-bottom: clamp(40px, 6vw, 68px); }
+
+.kicker {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 12.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--violet);
+}
+.kicker::before {
+  content: ""; width: 26px; height: 2px;
+  background: linear-gradient(90deg, var(--violet), var(--lavender));
+  border-radius: 2px;
+}
+.kicker--light { color: var(--lavender); }
+.kicker--light::before { background: linear-gradient(90deg, var(--lavender), #fff); }
+
+.h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.1rem, 5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -.025em;
+  line-height: 1.04;
+  margin-top: 14px;
+}
+.h2 em { font-style: italic; }
+
+.grad-text {
+  background: linear-gradient(96deg, var(--violet) 10%, var(--lavender) 60%, var(--violet-600));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.lead {
+  margin-top: 18px;
+  font-size: 1.06rem;
+  color: var(--ink-soft);
+  max-width: 620px;
+}
+
+/* ---------- 4. Buttons ---------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 14px 26px;
+  border-radius: var(--r-pill);
+  font-family: var(--font-display);
+  font-size: 15px; font-weight: 600; letter-spacing: .02em;
+  transition: transform var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease),
+              background var(--t-med) var(--ease), border-color var(--t-med) var(--ease),
+              color var(--t-med) var(--ease), filter var(--t-med) var(--ease);
+  position: relative; overflow: hidden;
+  white-space: nowrap;
+}
+.btn .icon-arrow { transition: transform var(--t-med) var(--ease); font-size: 17px; }
+
+.btn--violet {
+  background: linear-gradient(135deg, var(--violet-600) 0%, var(--violet) 55%, var(--violet-700) 100%);
+  color: #fff;
+  box-shadow: var(--glow);
+}
+.btn--violet:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--glow-lg);
+}
+.btn--violet:hover .icon-arrow { transform: translateX(4px); }
+.btn--violet::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.28) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform .7s var(--ease);
+}
+.btn--violet:hover::after { transform: translateX(120%); }
+
+.btn--dark {
+  background: var(--ink); color: #fff;
+  box-shadow: 0 6px 20px rgba(20, 16, 31, .28);
+}
+.btn--dark:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(20, 16, 31, .34); }
+
+.btn--ghost {
+  border: 1.5px solid var(--line-strong); color: var(--ink);
+  background: transparent;
+}
+.btn--ghost:hover { border-color: var(--violet); color: var(--violet); transform: translateY(-2px); }
+
+.btn--light-ghost {
+  border: 1.5px solid rgba(255,255,255,.3); color: #fff;
+  background: rgba(255,255,255,.04); backdrop-filter: blur(6px);
+}
+.btn--light-ghost:hover { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.55); transform: translateY(-2px); }
+
+.btn--lg { padding: 18px 36px; font-size: 16.5px; }
+.btn--sm { padding: 10px 18px; font-size: 13.5px; }
+
+.btn--voted {
+  background: var(--ink); color: #fff;
+  box-shadow: 0 6px 18px rgba(20,16,31,.3);
+}
+.btn--voted:hover { transform: translateY(-2px); }
+
+/* Animierter Unterstrich-Link */
+.u-link {
+  position: relative;
+  font-weight: 600;
+}
+.u-link::after {
+  content: ""; position: absolute; left: 0; bottom: -3px;
+  width: 100%; height: 2px;
+  background: currentColor;
+  transform: scaleX(0); transform-origin: right;
+  transition: transform var(--t-med) var(--ease);
+  border-radius: 2px;
+}
+.u-link:hover::after, .u-link:focus-visible::after { transform: scaleX(1); transform-origin: left; }
+
+/* ---------- 5. Navigation ---------- */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 120;
+  padding: 20px 0;
+  transition: background var(--t-med) var(--ease), padding var(--t-med) var(--ease),
+              box-shadow var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
+  border-bottom: 1px solid transparent;
+}
+.nav__inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+
+.nav__brand {
+  display: inline-flex; align-items: center; gap: 12px;
+  color: #fff;
+  position: relative; z-index: 130;
+  transition: color var(--t-med) var(--ease);
+}
+.nav__brand-mark {
+  width: 42px; height: 42px;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, var(--violet-600), var(--violet-700));
+  color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 17px;
+  border-radius: 13px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.4);
+  transition: transform var(--t-med) var(--ease-spring);
+}
+.nav__brand:hover .nav__brand-mark { transform: rotate(-8deg) scale(1.06); }
+.nav__brand-text { font-family: var(--font-display); font-weight: 700; font-size: 15.5px; letter-spacing: .06em; }
+.nav__brand-text em { font-style: normal; color: var(--lavender); }
+
+.nav__links { display: flex; align-items: center; gap: 26px; }
+
+.nav__link {
+  position: relative;
+  font-size: 13.5px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+  color: rgba(255,255,255,.82);
+  padding: 8px 2px;
+  transition: color var(--t-med) var(--ease);
+}
+.nav__link::after {
+  content: ""; position: absolute; left: 0; bottom: 2px;
+  width: 100%; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, var(--lavender), var(--violet-600));
+  transform: scaleX(0); transform-origin: right;
+  transition: transform var(--t-med) var(--ease);
+}
+.nav__link:hover { color: #fff; }
+.nav__link:hover::after { transform: scaleX(1); transform-origin: left; }
+.nav__link.is-active { color: #fff; }
+.nav__link.is-active::after { transform: scaleX(1); }
+
+.nav__link--cta {
+  color: #fff;
+  background: linear-gradient(135deg, var(--violet-600), var(--violet));
+  padding: 10px 22px; border-radius: var(--r-pill);
+  box-shadow: var(--glow);
+  transition: transform var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease);
+}
+.nav__link--cta:hover { transform: translateY(-2px); box-shadow: var(--glow-lg); color: #fff; }
+.nav__link--cta::after { display: none; }
+
+/* Scrolled-Zustand */
+.nav--scrolled {
+  background: rgba(250, 248, 254, .85);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 10px 30px -18px rgba(20,10,40,.22);
+}
+.nav--scrolled .nav__brand { color: var(--ink); }
+.nav--scrolled .nav__brand-text em { color: var(--violet); }
+.nav--scrolled .nav__link { color: var(--ink-soft); }
+.nav--scrolled .nav__link:hover, .nav--scrolled .nav__link.is-active { color: var(--violet); }
+.nav--scrolled .nav__link--cta { color: #fff; }
+.nav--scrolled .nav__link--cta:hover { color: #fff; }
+
+/* Burger */
+.nav__burger {
+  display: none;
+  width: 46px; height: 46px;
+  border-radius: 13px;
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(8px);
+  flex-direction: column; align-items: center; justify-content: center; gap: 5px;
+  z-index: 130; position: relative;
+  transition: background var(--t-med) var(--ease);
+}
+.nav__burger span {
+  width: 20px; height: 2px; border-radius: 2px;
+  background: #fff;
+  transition: transform var(--t-med) var(--ease), opacity var(--t-med) var(--ease), background var(--t-med) var(--ease);
+}
+.nav--scrolled .nav__burger { border-color: var(--line-strong); background: var(--surface); }
+.nav--scrolled .nav__burger span { background: var(--ink); }
+
+/* ---------- 6. Hero ---------- */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex; align-items: center;
+  padding: 150px 0 120px;
+  color: #fff;
+  background:
+    radial-gradient(1000px 720px at 85% -12%, rgba(255,255,255,.10), transparent 60%),
+    radial-gradient(820px 640px at 6% 112%, rgba(0,0,0,.6), transparent 55%),
+    linear-gradient(180deg, #0A0A0A 0%, #121212 55%, #171717 100%);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero__grid {
+  position: absolute; inset: 0; z-index: -1;
+  background-image:
+    linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+  background-size: 72px 72px;
+  -webkit-mask-image: radial-gradient(860px 620px at 50% 40%, #000 0%, transparent 75%);
+  mask-image: radial-gradient(860px 620px at 50% 40%, #000 0%, transparent 75%);
+}
+
+.hero__orb {
+  position: absolute; z-index: -1;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: .5;
+  will-change: transform;
+}
+.hero__orb--1 { width: 520px; height: 520px; top: -160px; right: -80px; background: var(--violet-600); animation: float-a 16s ease-in-out infinite; }
+.hero__orb--2 { width: 380px; height: 380px; bottom: -120px; left: -100px; background: #2B2B2B; animation: float-b 20s ease-in-out infinite; }
+.hero__orb--3 { width: 220px; height: 220px; top: 42%; left: 14%; background: rgba(255,255,255,.45); opacity: .35; animation: float-a 24s ease-in-out infinite reverse; }
+
+@keyframes float-a { 0%,100% { transform: translate(0,0) } 50% { transform: translate(40px,-34px) } }
+@keyframes float-b { 0%,100% { transform: translate(0,0) } 50% { transform: translate(-34px,30px) } }
+
+.hero__grain {
+  position: absolute; inset: 0; z-index: 0;
+  pointer-events: none;
+  opacity: .05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.hero__inner { position: relative; z-index: 2; }
+
+.hero__pill {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 9px 18px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,.06);
+  backdrop-filter: blur(8px);
+  font-size: 13px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase;
+  color: rgba(255,255,255,.85);
+}
+.hero__pill-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--lavender);
+  box-shadow: 0 0 0 0 rgba(255,255,255,.6);
+  animation: pulse-dot 2.4s var(--ease) infinite;
+}
+@keyframes pulse-dot { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,.6) } 70% { box-shadow: 0 0 0 10px rgba(255,255,255,0) } 100% { box-shadow: 0 0 0 0 rgba(255,255,255,0) } }
+
+.hero__title { margin-top: 34px; }
+
+.hero__line { display: block; }
+.hero__line--1 {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 8.4vw, 7.2rem);
+  font-weight: 700; line-height: .98; letter-spacing: -.03em;
+}
+.hero__line--2 {
+  display: flex; align-items: flex-end; flex-wrap: wrap; gap: 20px 26px;
+  margin-top: 6px;
+}
+.hero__year {
+  font-family: var(--font-display);
+  font-size: clamp(5.6rem, 17.5vw, 14.5rem);
+  font-weight: 700; line-height: .85; letter-spacing: -.045em;
+  background: linear-gradient(100deg, #fff 20%, var(--lavender) 55%, var(--violet-600) 90%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.hero__school {
+  display: inline-flex; flex-direction: column; gap: 2px;
+  border: 1.5px solid rgba(255,255,255,.28);
+  border-radius: var(--r-md);
+  padding: 12px 20px;
+  font-family: var(--font-display);
+  font-size: clamp(.85rem, 2.1vw, 1.45rem);
+  font-weight: 600; letter-spacing: .3em; line-height: 1.25;
+  margin-bottom: clamp(.35rem, 1.6vw, 1.5rem);
+  color: #fff;
+  background: rgba(255,255,255,.03);
+}
+.hero__quote {
+  margin-top: 40px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(1.35rem, 3.2vw, 2.3rem);
+  color: var(--lavender);
+  line-height: 1.3;
+}
+.hero__sub {
+  margin-top: 18px;
+  max-width: 600px;
+  font-size: 1.05rem;
+  color: rgba(255,255,255,.68);
+}
+.hero__cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 38px; }
+.hero__meta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 42px; }
+.hero__chip {
+  padding: 8px 16px;
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,.04);
+  font-size: 12.5px; font-weight: 600; letter-spacing: .06em;
+  color: rgba(255,255,255,.75);
+}
+
+/* Drehender Badge */
+.hero__badge {
+  position: absolute; right: 4vw; bottom: 96px; z-index: 1;
+  width: clamp(92px, 9vw, 128px); height: auto;
+  color: rgba(255,255,255,.75);
+  animation: spin 22s linear infinite;
+}
+.hero__badge text { font-size: 12px; letter-spacing: 3px; font-family: var(--font-display); fill: rgba(255,255,255,.8); }
+.hero__badge-center { font-size: 30px; font-weight: 700; fill: var(--lavender); letter-spacing: 0; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Scroll-Indikator */
+.hero__scroll {
+  position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  font-size: 11px; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(255,255,255,.5);
+  transition: color var(--t-med) var(--ease);
+}
+.hero__scroll:hover { color: #fff; }
+.hero__scroll-line {
+  width: 1.5px; height: 40px;
+  background: linear-gradient(180deg, var(--lavender), transparent);
+  position: relative; overflow: hidden;
+}
+.hero__scroll-line::after {
+  content: ""; position: absolute; top: -40%; left: 0;
+  width: 100%; height: 40%;
+  background: #fff;
+  animation: scroll-line 2.2s var(--ease) infinite;
+}
+@keyframes scroll-line { 0% { top: -40% } 60%, 100% { top: 110% } }
+
+/* Entrance */
+.anim {
+  opacity: 0; transform: translateY(26px);
+  transition: opacity .9s var(--ease) var(--d, 0s), transform .9s var(--ease) var(--d, 0s);
+}
+.anim.in { opacity: 1; transform: none; }
+
+/* ---------- 7. Marquee ---------- */
+.marquee {
+  background: var(--dark);
+  border-block: 1px solid rgba(255,255,255,.14);
+  padding: 26px 0;
+  overflow: hidden;
+  position: relative;
+}
+.marquee::before, .marquee::after {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2;
+  pointer-events: none;
+}
+.marquee::before { left: 0; background: linear-gradient(90deg, var(--dark), transparent); }
+.marquee::after { right: 0; background: linear-gradient(-90deg, var(--dark), transparent); }
+
+.marquee__track {
+  display: flex; gap: 64px; width: max-content;
+  animation: marquee 30s linear infinite;
+}
+.marquee:hover .marquee__track { animation-play-state: paused; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+.marquee__item {
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 4.6vw, 3.4rem);
+  font-weight: 700; letter-spacing: -.02em;
+  color: #fff;
+  white-space: nowrap;
+}
+.marquee__item--outline {
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255,255,255,.6);
+}
+.marquee__star { color: var(--violet-600); font-size: .75em; vertical-align: .08em; }
+
+/* ---------- 8. Countdown ---------- */
+.countdown {
+  padding: clamp(70px, 9vw, 116px) 0;
+  text-align: center;
+  scroll-margin-top: 76px;
+}
+.countdown__inner { display: flex; flex-direction: column; align-items: center; }
+.countdown__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4.6vw, 3.2rem);
+  font-weight: 700; letter-spacing: -.02em;
+  margin-top: 14px;
+}
+.countdown__tiles {
+  display: flex; align-items: flex-start; justify-content: center; gap: 14px;
+  margin-top: 44px;
+  flex-wrap: wrap;
+}
+.countdown__tile {
+  min-width: clamp(86px, 14vw, 132px);
+  padding: 22px 16px 18px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
+  transition: transform var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
+}
+.countdown__tile:hover { transform: translateY(-4px); box-shadow: var(--sh-2); border-color: var(--line-strong); }
+.countdown__num {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(2.3rem, 6.4vw, 4.4rem);
+  font-weight: 700; letter-spacing: -.03em; line-height: 1;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+.countdown__label {
+  display: block; margin-top: 8px;
+  font-size: 11.5px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.countdown__sep {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5.4vw, 3.6rem);
+  font-weight: 700; color: var(--violet-600);
+  margin-top: 6px;
+  animation: sep-pulse 2s ease-in-out infinite;
+}
+@keyframes sep-pulse { 0%,100% { opacity: .35 } 50% { opacity: 1 } }
+
+.countdown__ended-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4.6vw, 3.2rem);
+  font-weight: 700; letter-spacing: -.02em;
+  margin-top: 14px;
+}
+.countdown__ended-sub { margin-top: 12px; color: var(--ink-soft); font-size: 1.05rem; }
+
+.countdown__note {
+  margin-top: 34px;
+  font-size: .96rem; color: var(--ink-faint);
+  max-width: 520px;
+}
+
+/* ---------- 9. Toast ---------- */
+.toast {
+  position: fixed; left: 50%; bottom: 28px; z-index: 260;
+  transform: translate(-50%, 140%);
+  opacity: 0;
+  min-width: min(420px, 90vw);
+  padding: 16px 22px;
+  border-radius: var(--r-md);
+  background: rgba(10, 10, 10, .92);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.28);
+  box-shadow: var(--sh-3);
+  transition: transform .5s var(--ease-spring), opacity .4s var(--ease);
+  text-align: left;
+}
+.toast.show { transform: translate(-50%, 0); opacity: 1; }
+.toast__title { color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 1rem; }
+.toast__title::before {
+  content: "✓ "; color: var(--lavender);
+}
+.toast__sub { margin-top: 2px; font-size: .88rem; color: rgba(255,255,255,.65); }
+
+/* ---------- 10. Scroll-Progress ---------- */
+.progress {
+  position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 200;
+  background: linear-gradient(90deg, var(--violet), var(--lavender));
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+}
+
+/* ---------- 11. Reveal ---------- */
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity .8s var(--ease), transform .8s var(--ease);
+}
+.reveal.in { opacity: 1; transform: none; }
+
+/* ---------- 12. Reduced Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001s !important;
+  }
+  .anim, .reveal { opacity: 1; transform: none; }
+  .marquee__track { animation: none; }
+}
+
+/* ---------- 13. Responsive Navigation ---------- */
+@media (max-width: 900px) {
+  .nav__burger { display: flex; }
+
+  .nav__links {
+    position: fixed; inset: 0; z-index: 125;
+    flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+    background:
+      radial-gradient(600px 400px at 85% 10%, rgba(255,255,255,.08), transparent 60%),
+      radial-gradient(500px 400px at 10% 90%, rgba(0,0,0,.6), transparent 55%),
+      rgba(10, 10, 10, .98);
+    backdrop-filter: blur(20px);
+    opacity: 0; visibility: hidden;
+    transform: translateY(-14px);
+    transition: opacity .38s var(--ease), transform .38s var(--ease), visibility .38s;
+  }
+  .nav__links .nav__link {
+    font-size: 1.5rem; letter-spacing: .05em;
+    color: rgba(255,255,255,.85);
+    padding: 10px 4px;
+    opacity: 0; transform: translateY(16px);
+    transition: opacity .4s var(--ease), transform .4s var(--ease), color var(--t-med);
+  }
+  .nav__links .nav__link--cta { margin-top: 10px; font-size: 1.05rem; padding: 14px 30px; }
+
+  .nav--open .nav__links { opacity: 1; visibility: visible; transform: none; }
+  .nav--open .nav__links .nav__link { opacity: 1; transform: none; }
+  .nav--open .nav__links .nav__link:nth-child(1) { transition-delay: .06s }
+  .nav--open .nav__links .nav__link:nth-child(2) { transition-delay: .12s }
+  .nav--open .nav__links .nav__link:nth-child(3) { transition-delay: .18s }
+  .nav--open .nav__links .nav__link:nth-child(4) { transition-delay: .24s }
+  .nav--open .nav__links .nav__link:nth-child(5) { transition-delay: .3s }
+
+  .nav--open .nav__burger span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav--open .nav__burger span:nth-child(2) { opacity: 0; }
+  .nav--open .nav__burger span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+  .nav--open .nav__burger { border-color: rgba(255,255,255,.4); background: rgba(255,255,255,.08); }
+  .nav--open .nav__burger span { background: #fff; }
+  .nav--open .nav__brand { color: #fff; }
+  .nav--open .nav__brand-text em { color: var(--lavender); }
+
+  body.menu-open { overflow: hidden; }
+
+  .hero__badge { display: none; }
+  .hero__scroll { display: none; }
+  .hero { padding-top: 130px; }
+}
+
+@media (max-width: 640px) {
+  .hero__meta { display: none; }
+  .hero__cta { flex-direction: column; align-items: stretch; }
+  .hero__cta .btn { justify-content: center; }
+}
+
+/* ==========================================================================
+   AK 2027 · Gymnasium Werlte — SECTIONS
+   --------------------------------------------------------------------------
+   Hoodie-Voting · Ergebnisse/Charts · Events · Kasse · Sponsoren
+   Team · Kontakt · Footer
+   ========================================================================== */
+
+/* ================= VOLTING: GRID & KARTEN ================= */
+.vote-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+}
+
+.hoodie-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-xl);
+  padding: 14px 14px 24px;
+  box-shadow: var(--sh-1);
+  display: flex; flex-direction: column;
+  transition: transform .5s var(--ease), box-shadow .5s var(--ease), border-color .5s var(--ease);
+  position: relative;
+}
+.hoodie-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--sh-2);
+  border-color: var(--line-strong);
+}
+.hoodie-card.is-selected {
+  border-color: var(--violet);
+  box-shadow: 0 0 0 3px rgba(0,0,0,.12), var(--sh-2);
+}
+
+/* --- Hoodie-Preview (Platzhalter-Mockup) --- */
+.hoodie-preview {
+  position: relative;
+  aspect-ratio: 4 / 4.7;
+  border-radius: calc(var(--r-xl) - 8px);
+  overflow: hidden;
+  display: grid; place-items: center;
+  transition: transform .5s var(--ease);
+}
+.hoodie-card:hover .hoodie-preview { transform: scale(1.015); }
+
+.hoodie-preview__bg { position: absolute; inset: 0; }
+.hoodie-preview__svg { position: relative; z-index: 1; width: 72%; height: auto; filter: drop-shadow(0 18px 26px rgba(10,5,25,.35)); }
+
+.hoodie-preview__tag {
+  position: absolute; top: 14px; left: 14px; z-index: 2;
+  padding: 6px 12px;
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,.16);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,.3);
+  color: #fff;
+  font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+}
+.hoodie-preview__ph {
+  position: absolute; bottom: 14px; right: 14px; z-index: 2;
+  padding: 5px 11px;
+  border-radius: var(--r-pill);
+  background: rgba(0,0,0,.4);
+  color: rgba(255,255,255,.85);
+  font-size: 10.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase;
+}
+
+.hoodie-body { padding: 20px 8px 0; display: flex; flex-direction: column; flex: 1; }
+.hoodie-tag { font-size: 11.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--violet); }
+.hoodie-name { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; letter-spacing: -.015em; margin-top: 6px; }
+.hoodie-desc { margin-top: 8px; font-size: .93rem; color: var(--ink-soft); flex: 1; }
+
+.hoodie-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 20px; }
+.hoodie-chosen {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12.5px; font-weight: 700; letter-spacing: .03em;
+  color: var(--violet);
+}
+.hoodie-chosen svg { animation: pop-in .45s var(--ease-spring); }
+@keyframes pop-in { 0% { transform: scale(0) rotate(-30deg) } 70% { transform: scale(1.25) } 100% { transform: scale(1) } }
+
+.hoodie-card.is-selected::after {
+  content: ""; position: absolute; inset: 0;
+  border-radius: var(--r-xl);
+  pointer-events: none;
+  background: radial-gradient(420px 200px at 50% 0%, rgba(0,0,0,.10), transparent 70%);
+  animation: sel-glow 1.2s var(--ease) 1;
+}
+@keyframes sel-glow { 0% { opacity: 0 } 25% { opacity: 1 } 100% { opacity: 0 } }
+
+/* --- Abstimmungshinweis unter dem Grid --- */
+.vote-note {
+  margin: 30px auto 0; max-width: 560px; text-align: center;
+  font-size: .98rem; color: var(--ink-soft);
+  background: var(--violet-50);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-md);
+  padding: 14px 22px;
+  display: none;
+}
+.vote-note.show { display: block; }
+.vote-note strong { color: var(--violet-700); }
+
+/* ================= ERGEBNISSE / CHARTS ================= */
+.results {
+  margin-top: 64px;
+  background:
+    radial-gradient(760px 380px at 85% -20%, rgba(255,255,255,.10), transparent 60%),
+    radial-gradient(600px 380px at 0% 120%, rgba(0,0,0,.5), transparent 55%),
+    linear-gradient(160deg, #171717, #0A0A0A 70%);
+  border-radius: var(--r-xl);
+  padding: clamp(28px, 5vw, 48px);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--sh-3);
+}
+.results::before {
+  content: ""; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-mask-image: radial-gradient(500px 300px at 100% 0%, #000, transparent 70%);
+  mask-image: radial-gradient(500px 300px at 100% 0%, #000, transparent 70%);
+}
+
+.results__head {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  position: relative; z-index: 2;
+}
+.results__title { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; letter-spacing: -.01em; }
+
+.live-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 15px;
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.18);
+  font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+}
+.live-badge .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: #4ADE80;
+  box-shadow: 0 0 0 0 rgba(74,222,128,.6);
+  animation: pulse-dot 2s var(--ease) infinite;
+}
+.live-badge.is-ended .dot { background: var(--lavender); animation: none; box-shadow: none; }
+
+.rank-chip {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 15px;
+  border-radius: var(--r-pill);
+  background: linear-gradient(135deg, var(--violet-600), var(--violet));
+  box-shadow: var(--glow);
+  font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+}
+.rank-chip .prize { animation: pop-in .6s var(--ease-spring) .2s both; }
+
+.results__bars { margin-top: 34px; position: relative; z-index: 2; display: flex; flex-direction: column; gap: 22px; }
+
+.bar-row { position: relative; }
+.bar-row.is-lead {
+  padding: 18px 18px 16px;
+  margin: -18px -18px -16px;
+  border-radius: var(--r-lg);
+  background: linear-gradient(90deg, rgba(255,255,255,.10), rgba(255,255,255,.02));
+  border: 1px solid rgba(255,255,255,.18);
+}
+.bar-row__top { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
+.bar-row__label { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.bar-row__rank {
+  display: grid; place-items: center;
+  width: 30px; height: 30px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.09);
+  border: 1px solid rgba(255,255,255,.16);
+  font-family: var(--font-display); font-weight: 700; font-size: 13.5px;
+  color: rgba(255,255,255,.85);
+}
+.bar-row.is-lead .bar-row__rank { background: linear-gradient(135deg, var(--violet-600), var(--violet)); border: 0; color: #fff; }
+.bar-row__name { font-family: var(--font-display); font-weight: 700; font-size: 1.06rem; color: #fff; }
+.bar-row__lead-tag {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--lavender); padding: 4px 10px; border-radius: var(--r-pill);
+  border: 1px solid rgba(255,255,255,.3);
+  background: rgba(255,255,255,.1);
+}
+.bar-row__pct {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.4vw, 2.1rem);
+  font-weight: 700; letter-spacing: -.02em;
+  color: #fff;
+}
+.bar-row__pct small { font-size: .6em; color: rgba(255,255,255,.55); font-weight: 600; margin-left: 3px; }
+
+.bar-track {
+  margin-top: 10px;
+  height: 12px;
+  border-radius: var(--r-pill);
+  background: rgba(255,255,255,.08);
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--violet-600), var(--lavender));
+  transition: width 1.2s var(--ease);
+  position: relative;
+}
+.bar-fill::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.45) 50%, transparent 70%);
+  animation: bar-shine 2.6s var(--ease) infinite;
+}
+@keyframes bar-shine { 0% { transform: translateX(-60%) } 60%, 100% { transform: translateX(120%) } }
+.bar-row.is-lead .bar-fill {
+  background: linear-gradient(90deg, var(--violet-600), var(--violet), var(--lavender));
+  box-shadow: 0 0 18px rgba(255,255,255,.35);
+}
+
+.results__foot {
+  margin-top: 30px; position: relative; z-index: 2;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;
+  font-size: .88rem; color: rgba(255,255,255,.55);
+}
+.results__vote-status { color: var(--lavender); font-weight: 600; }
+
+/* ================= EVENTS ================= */
+.event-list { display: flex; flex-direction: column; gap: 16px; }
+
+.event-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  box-shadow: var(--sh-1);
+  overflow: hidden;
+  transition: transform .45s var(--ease), box-shadow .45s var(--ease), border-color .45s var(--ease);
+}
+.event-card:hover { transform: translateY(-3px); box-shadow: var(--sh-2); border-color: var(--line-strong); }
+.event-card.is-next { border-color: rgba(20,20,20,.5); box-shadow: 0 0 0 3px rgba(20,20,20,.08); }
+
+.event-card__row {
+  display: flex; align-items: center; gap: clamp(16px, 4vw, 34px);
+  padding: clamp(18px, 3.6vw, 26px) clamp(16px, 4vw, 30px);
+  cursor: pointer;
+}
+
+.event-date {
+  flex-shrink: 0;
+  width: clamp(68px, 12vw, 92px);
+  padding: 12px 8px;
+  border-radius: var(--r-md);
+  background: linear-gradient(160deg, var(--ink), var(--dark-2));
+  color: #fff;
+  text-align: center;
+  transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+}
+.event-card:hover .event-date { transform: rotate(-3deg) scale(1.04); box-shadow: 0 10px 24px -8px rgba(20,10,40,.4); }
+.event-date__day { font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.3rem); font-weight: 700; line-height: 1; }
+.event-date__month { font-size: 11px; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--lavender); margin-top: 5px; }
+.event-date__year { font-size: 10px; color: rgba(255,255,255,.45); margin-top: 2px; }
+
+.event-thumb {
+  flex-shrink: 0;
+  width: clamp(64px, 11vw, 84px);
+  height: clamp(64px, 11vw, 84px);
+  border-radius: var(--r-md);
+  border: 1.5px dashed var(--line-strong);
+  background: var(--violet-50);
+  display: grid; place-items: center;
+  overflow: hidden;
+  transition: transform .45s var(--ease-spring), border-color .45s var(--ease), background .45s var(--ease);
+}
+.event-card:hover .event-thumb { transform: scale(1.05); border-color: var(--violet); background: var(--violet-100); }
+.event-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.event-thumb__icon { color: var(--violet); opacity: .5; }
+
+.event-info { flex: 1; min-width: 0; }
+.event-info__top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.event-cat {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--violet-700);
+  background: var(--violet-100);
+  padding: 4px 11px; border-radius: var(--r-pill);
+}
+.event-next-tag {
+  font-size: 10.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: #fff;
+  background: linear-gradient(135deg, var(--violet-600), var(--violet));
+  padding: 4px 11px; border-radius: var(--r-pill);
+  box-shadow: var(--glow);
+  animation: pulse-soft 2.4s ease-in-out infinite;
+}
+@keyframes pulse-soft { 0%,100% { box-shadow: 0 0 0 0 rgba(20,20,20,.4) } 50% { box-shadow: 0 0 0 8px rgba(20,20,20,0) } }
+.event-name { font-family: var(--font-display); font-size: clamp(1.15rem, 3vw, 1.5rem); font-weight: 700; letter-spacing: -.01em; margin-top: 7px; }
+.event-meta { margin-top: 6px; font-size: .9rem; color: var(--ink-soft); display: flex; gap: 8px 18px; flex-wrap: wrap; }
+.event-meta span { display: inline-flex; align-items: center; gap: 6px; }
+.event-meta svg { flex-shrink: 0; }
+
+.event-toggle {
+  flex-shrink: 0;
+  display: inline-flex; flex-direction: column; align-items: center; gap: 5px;
+  font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--violet);
+  transition: transform .4s var(--ease);
+}
+.event-toggle__icon {
+  display: grid; place-items: center;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line-strong);
+  background: var(--surface);
+  transition: transform .45s var(--ease-spring), background .4s var(--ease), border-color .4s var(--ease);
+}
+.event-toggle__icon svg { transition: transform .45s var(--ease); }
+.event-card:hover .event-toggle__icon { border-color: var(--violet); transform: scale(1.06); }
+.event-card.is-open .event-toggle__icon { background: var(--violet); border-color: var(--violet); }
+.event-card.is-open .event-toggle__icon svg { transform: rotate(180deg); }
+.event-card.is-open .event-toggle__icon path { stroke: #fff; }
+
+.event-desc-wrap {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows .55s var(--ease);
+}
+.event-card.is-open .event-desc-wrap { grid-template-rows: 1fr; }
+.event-desc-inner { overflow: hidden; }
+.event-desc {
+  padding: 4px clamp(16px, 4vw, 30px) clamp(20px, 3.4vw, 28px) calc(clamp(16px, 4vw, 30px) + clamp(68px, 12vw, 92px) + clamp(16px, 4vw, 34px));
+  font-size: .96rem; color: var(--ink-soft);
+  border-top: 1px dashed var(--line);
+  line-height: 1.7;
+  animation: fade-in .5s var(--ease);
+}
+@keyframes fade-in { from { opacity: 0 } to { opacity: 1 } }
+
+/* ================= AK-KASSE ================= */
+.kasse-panel {
+  background:
+    radial-gradient(700px 340px at 90% -30%, rgba(255,255,255,.10), transparent 60%),
+    radial-gradient(520px 300px at 0% 120%, rgba(0,0,0,.55), transparent 55%),
+    linear-gradient(155deg, #181818, #0A0A0A);
+  border-radius: var(--r-xl);
+  padding: clamp(30px, 6vw, 54px);
+  color: #fff;
+  box-shadow: var(--sh-3);
+  position: relative; overflow: hidden;
+}
+.kasse-panel::before {
+  content: ""; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(600px 320px at 100% 0%, #000, transparent 70%);
+  mask-image: radial-gradient(600px 320px at 100% 0%, #000, transparent 70%);
+}
+.kasse-panel__inner { position: relative; z-index: 2; }
+.kasse-panel__top { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+.kasse-label { font-size: 12px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--lavender); }
+.kasse-sum {
+  font-family: var(--font-display);
+  font-size: clamp(2.6rem, 7vw, 4.6rem);
+  font-weight: 700; letter-spacing: -.03em; line-height: 1;
+}
+.kasse-sum small { font-size: .45em; color: rgba(255,255,255,.55); font-weight: 600; }
+.kasse-goal { margin-top: 8px; font-size: .95rem; color: rgba(255,255,255,.6); }
+.kasse-goal strong { color: #fff; }
+.kasse-bar {
+  margin-top: 30px;
+  height: 16px; border-radius: var(--r-pill);
+  background: rgba(255,255,255,.1);
+  overflow: hidden;
+}
+.kasse-fill {
+  height: 100%; width: 0%;
+  border-radius: var(--r-pill);
+  background: linear-gradient(90deg, var(--violet-600), var(--lavender));
+  box-shadow: 0 0 22px rgba(0,0,0,.3);
+  transition: width 1.4s var(--ease);
+}
+.kasse-hint { margin-top: 16px; font-size: .85rem; color: rgba(255,255,255,.45); }
+
+/* ================= SPONSOREN ================= */
+.sponsor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.sponsor-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 28px 24px 24px;
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  transition: transform .45s var(--ease), box-shadow .45s var(--ease), border-color .45s var(--ease);
+}
+.sponsor-card:hover { transform: translateY(-6px); box-shadow: var(--sh-2); border-color: var(--violet); }
+
+.sponsor-logo {
+  width: 92px; height: 92px;
+  display: grid; place-items: center;
+  border-radius: 26px;
+  border: 1.5px dashed var(--line-strong);
+  background: var(--violet-50);
+  transition: transform .45s var(--ease-spring), border-color .45s var(--ease), background .45s var(--ease);
+  overflow: hidden;
+}
+.sponsor-card:hover .sponsor-logo { transform: scale(1.07); border-color: var(--violet); background: var(--violet-100); }
+.sponsor-logo__initials { font-family: var(--font-display); font-weight: 700; font-size: 1.5rem; color: var(--violet); letter-spacing: .05em; }
+.sponsor-logo img { width: 100%; height: 100%; object-fit: contain; padding: 14px; filter: grayscale(1); opacity: .55; transition: filter .45s var(--ease), opacity .45s var(--ease); }
+.sponsor-card:hover .sponsor-logo img { filter: grayscale(0); opacity: 1; }
+
+.sponsor-name { font-family: var(--font-display); font-weight: 700; font-size: 1.08rem; margin-top: 18px; }
+.sponsor-note { margin-top: 4px; font-size: .86rem; color: var(--ink-faint); }
+.sponsor-url { margin-top: 14px; font-size: .88rem; }
+
+/* ================= TEAM ================= */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+.team-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 30px 22px 24px;
+  text-align: center;
+  transition: transform .45s var(--ease), box-shadow .45s var(--ease), border-color .45s var(--ease);
+}
+.team-card:hover { transform: translateY(-6px); box-shadow: var(--sh-2); border-color: var(--line-strong); }
+.team-avatar {
+  width: 84px; height: 84px; margin: 0 auto;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  color: #fff;
+  font-family: var(--font-display); font-weight: 700; font-size: 1.5rem;
+  box-shadow: 0 10px 26px -8px rgba(20,10,40,.4);
+  transition: transform .45s var(--ease-spring);
+}
+.team-card:hover .team-avatar { transform: scale(1.08) rotate(-4deg); }
+.team-tone-1 { background: linear-gradient(135deg, #4A4A4A, #1A1A1A); }
+.team-tone-2 { background: linear-gradient(135deg, #333333, #0D0D0D); }
+.team-tone-3 { background: linear-gradient(135deg, #6B6B6B, #333333); }
+.team-tone-4 { background: linear-gradient(135deg, #2A2A2A, #050505); }
+.team-name { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin-top: 18px; }
+.team-role { margin-top: 4px; font-size: .88rem; color: var(--ink-soft); }
+.team-ig { display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; font-size: .84rem; color: var(--violet); font-weight: 600; opacity: 0; transform: translateY(6px); transition: opacity .4s var(--ease), transform .4s var(--ease); }
+.team-card:hover .team-ig { opacity: 1; transform: none; }
+
+/* ================= KONTAKT ================= */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.contact-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 32px 28px;
+  transition: transform .45s var(--ease), box-shadow .45s var(--ease), border-color .45s var(--ease);
+  display: flex; flex-direction: column;
+}
+.contact-card:hover { transform: translateY(-6px); box-shadow: var(--sh-2); border-color: var(--violet); }
+.contact-icon {
+  width: 52px; height: 52px;
+  display: grid; place-items: center;
+  border-radius: 17px;
+  background: linear-gradient(135deg, var(--violet-600), var(--violet));
+  color: #fff;
+  box-shadow: var(--glow);
+  margin-bottom: 18px;
+}
+.contact-card__h { font-family: var(--font-display); font-weight: 700; font-size: 1.12rem; }
+.contact-card__p { margin-top: 8px; font-size: .92rem; color: var(--ink-soft); flex: 1; }
+.contact-card__a { margin-top: 16px; font-size: .92rem; font-weight: 600; color: var(--violet); }
+
+/* ================= FOOTER ================= */
+.footer {
+  background:
+    radial-gradient(900px 420px at 90% -10%, rgba(255,255,255,.08), transparent 60%),
+    var(--dark);
+  color: rgba(255,255,255,.72);
+  padding: 90px 0 40px;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid rgba(255,255,255,.16);
+}
+.footer__big {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(3.4rem, 13vw, 10.5rem);
+  line-height: 1;
+  letter-spacing: -.03em;
+  text-align: center;
+  color: transparent;
+  -webkit-text-stroke: 1.5px rgba(255,255,255,.13);
+  user-select: none;
+  margin-bottom: 60px;
+}
+.footer__big em { font-style: normal; -webkit-text-stroke: 1.5px rgba(255,255,255,.35); }
+.footer__cols {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding-block: 40px;
+  border-block: 1px solid rgba(255,255,255,.09);
+}
+.footer__col { display: flex; flex-direction: column; gap: 10px; }
+.footer__col--brand .nav__brand { color: #fff; margin-bottom: 6px; }
+.footer__tag { font-size: .92rem; color: rgba(255,255,255,.55); max-width: 300px; }
+.footer__h { font-size: 11.5px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--lavender); margin-bottom: 8px; }
+.footer__col a {
+  font-size: .95rem; color: rgba(255,255,255,.68);
+  transition: color var(--t-med) var(--ease), transform var(--t-med) var(--ease);
+  width: fit-content;
+}
+.footer__col a:hover { color: #fff; transform: translateX(3px); }
+.footer__legal {
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding-top: 28px;
+  font-size: .84rem; color: rgba(255,255,255,.4);
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1024px) {
+  .vote-grid { grid-template-columns: repeat(2, 1fr); }
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .sponsor-grid { grid-template-columns: repeat(2, 1fr); }
+  .contact-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 680px) {
+  .vote-grid, .team-grid, .sponsor-grid, .contact-grid { grid-template-columns: 1fr; }
+  .footer__cols { grid-template-columns: 1fr 1fr; }
+  .event-card__row { flex-wrap: wrap; }
+  .event-toggle { margin-left: auto; }
+  .event-thumb { display: none; }
+  .event-desc { padding-left: clamp(16px, 4vw, 30px); }
+  .results__head { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 420px) {
+  .footer__cols { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================================
+   14. LIQUID GLASS · Apple-inspirierte Glas-Veredelung
+   --------------------------------------------------------------------------
+   Frost (Blur+Saturate), Lichtkanten, Specular-Sheen, farbige Blobs im
+   Hintergrund. Ergänzt nur visuell — Struktur/Klassen bleiben unverändert.
+   ========================================================================== */
+:root {
+  --glass-blur:        22px;
+  --glass-sat:         180%;
+  --glass-bg:          rgba(255,255,255,.50);
+  --glass-bg-strong:   rgba(255,255,255,.66);
+  --glass-border-soft: rgba(255,255,255,.45);
+  --glass-edge:        inset 0 1px 0 rgba(255,255,255,.85), inset 0 0 0 1px rgba(255,255,255,.25);
+  --glass-edge-dark:   inset 0 1px 0 rgba(255,255,255,.18), inset 0 0 0 1px rgba(255,255,255,.10);
+}
+
+/* Farbige, weiche Blobs hinter dem gesamten Content — das „Fluid“ hinterm Glas */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -12%;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(36% 28% at 14% 16%, rgba(0,0,0,.10), transparent 70%),
+    radial-gradient(30% 24% at 88% 6%,  rgba(0,0,0,.12), transparent 70%),
+    radial-gradient(30% 30% at 80% 76%, rgba(0,0,0,.09), transparent 70%),
+    radial-gradient(26% 24% at 6% 84%,  rgba(0,0,0,.11), transparent 70%);
+  filter: blur(70px) saturate(100%);
+  animation: glass-drift 28s ease-in-out infinite alternate;
+}
+@keyframes glass-drift {
+  0%   { transform: translate(0,0) scale(1); }
+  50%  { transform: translate(-2.5%, 2.5%) scale(1.07); }
+  100% { transform: translate(2.5%,-2%) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) { body::before { animation: none; } }
+
+/* Wiederverwendbarer diagonaler Glanzstreifen für helle Glas-Karten */
+.hoodie-card::before,
+.countdown__tile::before,
+.sponsor-card::before,
+.team-card::before,
+.contact-card::before,
+.event-card::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(118deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,0) 32%, rgba(255,255,255,0) 66%, rgba(255,255,255,.3) 100%);
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  opacity: .9;
+}
+.hoodie-card, .countdown__tile, .sponsor-card, .team-card, .contact-card, .event-card {
+  position: relative; isolation: isolate; overflow: hidden;
+}
+
+/* --- Navigation: frostiges Glas --- */
+.nav--scrolled {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  border-bottom: 1px solid var(--glass-border-soft);
+  box-shadow: var(--glass-edge), 0 10px 30px -18px rgba(20,10,40,.28);
+}
+.nav__burger {
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+}
+.nav--scrolled .nav__burger {
+  background: rgba(255,255,255,.55);
+  border-color: rgba(255,255,255,.55);
+  box-shadow: var(--glass-edge);
+}
+@media (max-width: 900px) {
+  .nav__links {
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+  }
+}
+
+/* --- Hero: Glas-Pille & Schulschild --- */
+.hero__pill, .hero__school {
+  background: rgba(255,255,255,.08);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  box-shadow: var(--glass-edge-dark);
+}
+
+/* --- Buttons: Glas-Ghost --- */
+.btn--ghost {
+  background: rgba(255,255,255,.38);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  box-shadow: var(--glass-edge);
+}
+.btn--light-ghost {
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  box-shadow: var(--glass-edge-dark);
+}
+
+/* --- Countdown-Kacheln --- */
+.countdown__tile {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  border: 1px solid var(--glass-border-soft);
+  box-shadow: var(--glass-edge), var(--sh-1);
+}
+
+/* --- Hoodie-Karten (Voting) --- */
+.hoodie-card {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  border: 1px solid var(--glass-border-soft);
+}
+.hoodie-card.is-selected {
+  box-shadow: var(--glass-edge), 0 0 0 3px rgba(0,0,0,.16), var(--sh-2);
+}
+.hoodie-preview__tag, .hoodie-preview__ph {
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+}
+.vote-note {
+  background: rgba(255,255,255,.5);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  box-shadow: var(--glass-edge);
+}
+
+/* --- Ergebnisse & AK-Kasse: dunkles Glas --- */
+.results, .kasse-panel {
+  background:
+    radial-gradient(760px 380px at 85% -20%, rgba(255,255,255,.08), transparent 60%),
+    radial-gradient(600px 380px at 0% 120%, rgba(0,0,0,.45), transparent 55%),
+    rgba(10,10,10,.72);
+  backdrop-filter: blur(26px) saturate(160%);
+  -webkit-backdrop-filter: blur(26px) saturate(160%);
+  border: 1px solid rgba(255,255,255,.08);
+  box-shadow: var(--glass-edge-dark), var(--sh-3);
+}
+.live-badge, .rank-chip, .bar-row__rank, .event-next-tag, .event-cat {
+  backdrop-filter: blur(8px) saturate(160%);
+  -webkit-backdrop-filter: blur(8px) saturate(160%);
+}
+
+/* --- Events --- */
+.event-card {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  border: 1px solid var(--glass-border-soft);
+}
+.event-date {
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+}
+.event-toggle__icon {
+  background: rgba(255,255,255,.5);
+  backdrop-filter: blur(10px) saturate(180%);
+  -webkit-backdrop-filter: blur(10px) saturate(180%);
+}
+
+/* --- Sponsoren, Team, Kontakt --- */
+.sponsor-card, .team-card, .contact-card {
+  background: var(--glass-bg-strong);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-sat));
+  border: 1px solid var(--glass-border-soft);
+}
+.sponsor-logo, .contact-icon {
+  backdrop-filter: blur(8px) saturate(160%);
+  -webkit-backdrop-filter: blur(8px) saturate(160%);
+}
+
+/* --- Toast --- */
+.toast {
+  background: rgba(20,14,36,.62);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255,255,255,.22);
+  box-shadow: var(--glass-edge-dark), var(--sh-3);
+}
+
+/* --- Marquee-Streifen: bewusst wieder deckend schwarz --- */
+.marquee {
+  background: var(--dark);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* --- Fallback für Browser ohne backdrop-filter --- */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .hoodie-card, .countdown__tile, .sponsor-card, .team-card, .contact-card,
+  .event-card, .nav--scrolled, .vote-note, .results, .kasse-panel, .toast, .marquee {
+    background: var(--surface);
+  }
+  body::before { display: none; }
+}
+
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
+
+<!-- ================= NAVIGATION ================= -->
+<header class="nav" id="nav">
+  <div class="nav__inner container">
+    <a class="nav__brand" href="#start" aria-label="Zur Startseite">
+      <span class="nav__brand-mark">27</span>
+      <span class="nav__brand-text">ABSCHLUSS&nbsp;<em>2027</em></span>
+    </a>
+    <nav class="nav__links" id="nav-links" aria-label="Hauptnavigation">
+      <a class="nav__link is-active" href="#start">Startseite</a>
+      <a class="nav__link" href="#voting">Hoodie-Voting</a>
+      <a class="nav__link" href="#events">Events</a>
+      <a class="nav__link" href="#sponsoren">Sponsoren</a>
+      <a class="nav__link nav__link--cta" href="#kontakt">Kontakt</a>
+    </nav>
+    <button class="nav__burger" id="nav-burger" aria-expanded="false" aria-controls="nav-links" aria-label="Menü öffnen">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ================= HERO / LANDING ================= -->
+  <section class="hero" id="start" aria-labelledby="hero-title">
+    <div class="hero__grid" aria-hidden="true"></div>
+    <div class="hero__orb hero__orb--1" aria-hidden="true"></div>
+    <div class="hero__orb hero__orb--2" aria-hidden="true"></div>
+    <div class="hero__orb hero__orb--3" aria-hidden="true"></div>
+    <div class="hero__grain" aria-hidden="true"></div>
+
+    <div class="container hero__inner">
+      <p class="hero__pill anim" style="--d:.05s"><span class="hero__pill-dot"></span> Offizielles Projekt der AK-Stufe 2027</p>
+
+      <h1 class="hero__title" id="hero-title">
+        <span class="hero__line hero__line--1 anim" style="--d:.15s">ABSCHLUSS</span>
+        <span class="hero__line hero__line--2 anim" style="--d:.28s">
+          <span class="hero__year">2027</span>
+          <span class="hero__school"><span>GYMNASIUM</span><span>WERLTE</span></span>
+        </span>
+      </h1>
+
+      <p class="hero__quote anim" style="--d:.42s">„FLASHB-AK – 10 Jahre in Sekunden“</p>
+      <p class="hero__sub anim" style="--d:.54s">Gemeinsam auf dem Weg zum Abschluss 2027 – vom ersten Tag bis zur Zeugnisübergabe. Hier findest du Abstimmungen, Events und alles rund um unseren Abschluss.</p>
+
+      <div class="hero__cta anim" style="--d:.66s">
+        <a class="btn btn--violet" href="#voting">Für Hoodie abstimmen <span class="icon-arrow" aria-hidden="true">&rarr;</span></a>
+        <a class="btn btn--light-ghost" href="#events">Events ansehen</a>
+      </div>
+
+      <div class="hero__meta anim" style="--d:.78s">
+        <span class="hero__chip">3 Hoodie-Designs</span>
+        <span class="hero__chip">Abstimmung bis 31.03.2027</span>
+        <span class="hero__chip">F&uuml;r die ganze Stufe</span>
+      </div>
+    </div>
+
+    <svg class="hero__badge anim" style="--d:.95s" viewBox="0 0 120 120" aria-hidden="true">
+      <defs>
+        <path id="hero-circle" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/>
+      </defs>
+      <circle cx="60" cy="60" r="57" fill="none" stroke="rgba(255,255,255,.16)"/>
+      <text><textPath href="#hero-circle">GYMNASIUM WERLTE &nbsp;AK 2027&nbsp; </textPath></text>
+      <text class="hero__badge-center" x="60" y="64" text-anchor="middle">27</text>
+    </svg>
+
+    <a class="hero__scroll anim" style="--d:1.05s" href="#voting">
+      <span class="hero__scroll-line"></span>Scrollen
+    </a>
+  </section>
+
+  <!-- ================= MARQUEE-BAND ================= -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span class="marquee__item">AK 2027 <span class="marquee__star">&#10022;</span></span>
+      <span class="marquee__item marquee__item--outline">GYMNASIUM WERLTE</span>
+      <span class="marquee__item">DEINE STIMME Z&Auml;HLT <span class="marquee__star">&#10022;</span></span>
+      <span class="marquee__item marquee__item--outline">GEMEINSAM BIS ZUM ABSCHLUSS</span>
+      <span class="marquee__item">AK 2027 <span class="marquee__star">&#10022;</span></span>
+      <span class="marquee__item marquee__item--outline">GYMNASIUM WERLTE</span>
+      <span class="marquee__item">DEINE STIMME Z&Auml;HLT <span class="marquee__star">&#10022;</span></span>
+      <span class="marquee__item marquee__item--outline">GEMEINSAM BIS ZUM ABSCHLUSS</span>
+    </div>
+  </div>
+
+  <!-- ================= COUNTDOWN / DEADLINE ================= -->
+  <section class="countdown" id="countdown" aria-labelledby="countdown-title">
+    <div class="container countdown__inner">
+      <p class="kicker kicker--light">Hoodie-Voting &middot; Deadline</p>
+      <h2 class="countdown__title" id="countdown-title">Abstimmung endet in</h2>
+
+      <div class="countdown__tiles" id="countdown-tiles" role="timer" aria-live="off" aria-label="Verbleibende Abstimmungszeit">
+        <div class="countdown__tile"><span class="countdown__num" id="cd-days">00</span><span class="countdown__label">Tage</span></div>
+        <span class="countdown__sep" aria-hidden="true">:</span>
+        <div class="countdown__tile"><span class="countdown__num" id="cd-hours">00</span><span class="countdown__label">Stunden</span></div>
+        <span class="countdown__sep" aria-hidden="true">:</span>
+        <div class="countdown__tile"><span class="countdown__num" id="cd-mins">00</span><span class="countdown__label">Minuten</span></div>
+        <span class="countdown__sep" aria-hidden="true">:</span>
+        <div class="countdown__tile"><span class="countdown__num" id="cd-secs">00</span><span class="countdown__label">Sekunden</span></div>
+      </div>
+
+      <div class="countdown__ended" id="countdown-ended" hidden>
+        <h2 class="countdown__ended-title">Die Abstimmung ist beendet</h2>
+        <p class="countdown__ended-sub">Ergebnis steht fest – danke an alle, die abgestimmt haben.</p>
+      </div>
+
+      <p class="countdown__note">Danach z&auml;hlt jede Stimme. Einmal abgestimmt? Kein Problem – deine Auswahl kannst du bis zum Schluss jederzeit &auml;ndern.</p>
+    </div>
+  </section>
+
+  <!-- ================= HOODIE-VOTING ================= -->
+  <section class="section voting" id="voting" aria-labelledby="voting-title">
+    <div class="container">
+      <div class="sec-head reveal">
+        <p class="kicker">01 &middot; Hoodie-Voting</p>
+        <h2 class="h2" id="voting-title">W&auml;hle dein <em class="grad-text">Lieblings-Design.</em></h2>
+        <p class="lead">Ein Jahrgang, drei Designs. Stimme f&uuml;r genau ein Hoodie-Design ab &ndash; bis zum Ende der Abstimmung kannst du deine Wahl jederzeit &auml;ndern.</p>
+      </div>
+
+      <div id="hoodie-grid"></div>
+      <p class="vote-note reveal" id="vote-note"></p>
+
+      <div id="results-mount"></div>
+    </div>
+  </section>
+
+  <!-- ================= EVENTS ================= -->
+  <section class="section events" id="events" aria-labelledby="events-title">
+    <div class="container">
+      <div class="sec-head reveal">
+        <p class="kicker">02 &middot; Events &amp; Termine</p>
+        <h2 class="h2" id="events-title">Der Jahrgang <em class="grad-text">2027 feiert.</em></h2>
+        <p class="lead">Von der Abschlussparty bis zum Abschlussball &ndash; alle Termine auf einen Blick. Tipp auf &bdquo;Mehr erfahren&ldquo;, um Details zu sehen.</p>
+      </div>
+      <div id="event-list"></div>
+    </div>
+  </section>
+
+  <!-- ================= AK-KASSE ================= -->
+  <section class="section kasse section--tint" id="kasse" aria-labelledby="kasse-title">
+    <div class="container">
+      <div class="sec-head reveal">
+        <p class="kicker">03 &middot; AK-Kasse</p>
+        <h2 class="h2" id="kasse-title">Damit der Abschluss <em class="grad-text">gl&auml;nzt.</em></h2>
+        <p class="lead">Events, Ausflüge, Abschlussfeier &ndash; das alles kostet. Hier siehst du, wo wir stehen.</p>
+      </div>
+      <div id="kasse-mount"></div>
+    </div>
+  </section>
+
+  <!-- ================= SPONSOREN ================= -->
+  <section class="section sponsors" id="sponsoren" aria-labelledby="sponsors-title">
+    <div class="container">
+      <div class="sec-head reveal">
+        <p class="kicker">04 &middot; Mit freundlicher Unterst&uuml;tzung</p>
+        <h2 class="h2" id="sponsors-title">Unsere <em class="grad-text">Sponsoren.</em></h2>
+        <p class="lead">Lokale Unternehmen machen unseren Abschluss m&ouml;glich. Die Karten sind als Platzhalter vorbereitet &ndash; Logos und Links werden einfach in die Daten eingetragen.</p>
+      </div>
+      <div id="sponsor-grid"></div>
+    </div>
+  </section>
+
+  <!-- ================= ORGA-TEAM ================= -->
+  <section class="section team section--tint" id="team" aria-labelledby="team-title">
+    <div class="container">
+      <div class="sec-head reveal">
+        <p class="kicker">05 &middot; Orga-Team</p>
+        <h2 class="h2" id="team-title">Die K&ouml;pfe <em class="grad-text">dahinter.</em></h2>
+        <p class="lead">Eine Handvoll Leute, ein Ziel: einen Abschluss, an den wir uns erinnern.</p>
+      </div>
+      <div id="team-grid"></div>
+    </div>
+  </section>
+
+  <!-- ================= KONTAKT ================= -->
+  <section class="section kontakt" id="kontakt" aria-labelledby="kontakt-title">
+    <div class="container">
+      <div class="sec-head reveal">
+        <p class="kicker">06 &middot; Kontakt</p>
+        <h2 class="h2" id="kontakt-title">Fragen? <em class="grad-text">Schreib uns.</em></h2>
+        <p class="lead">F&uuml;r Sponsoring, Presse, Anregungen oder ein einfaches &bdquo;Weiter so!&ldquo; &ndash; wir freuen uns.</p>
+      </div>
+      <div id="contact-grid"></div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="container">
+    <p class="footer__big" aria-hidden="true">ABSCHLUSS&nbsp;<em>2027</em></p>
+    <div class="footer__cols">
+      <div class="footer__col footer__col--brand">
+        <a class="nav__brand" href="#start"><span class="nav__brand-mark">27</span><span class="nav__brand-text">ABSCHLUSS&nbsp;<em>2027</em></span></a>
+        <p class="footer__tag">Die Website der AK-Stufe 2027 am Gymnasium Werlte &ndash; hier laufen Abstimmungen, Events und alles rund um unseren Abschluss zusammen.</p>
+      </div>
+      <nav class="footer__col" aria-label="Footer-Navigation">
+        <p class="footer__h">Navigation</p>
+        <a href="#start">Startseite</a>
+        <a href="#voting">Hoodie-Voting</a>
+        <a href="#events">Events</a>
+        <a href="#sponsoren">Sponsoren</a>
+      </nav>
+      <div class="footer__col">
+        <p class="footer__h">Abstimmungen</p>
+        <a href="#voting">Hoodie-Design</a>
+        <a href="#kasse">AK-Kasse</a>
+      </div>
+      <div class="footer__col">
+        <p class="footer__h">Kontakt</p>
+        <a href="mailto:abschluss27.gymwerlte@gmail.com">abschluss27.gymwerlte@gmail.com</a>
+        <a href="#kontakt">Instagram: @abschluss27.gymwerlte</a>
+      </div>
+    </div>
+    <div class="footer__legal">
+      <span>&copy; 2026 &ndash; 2027 AK-Stufe Gymnasium Werlte</span>
+      <span>Unser Jahrgang 2027 am Gymnasium Werlte &middot; Abstimmungen, Events und alles rund um unseren Abschluss.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ================= TOAST ================= -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <p class="toast__title" id="toast-title"></p>
+  <p class="toast__sub" id="toast-sub"></p>
+</div>
+
+
+
+
+
+
+<script>
+/* ==========================================================================
+   AK 2027 – Mock-Daten
+   --------------------------------------------------------------------------
+   Diese Datei ist der EINZIGE Ort, an dem (Demo-)Inhalte gepflegt werden:
+   Hoodie-Designs, Sponsoren, Events, Kasse, Team, Kontakt.
+
+   Um die Seite mit einem echten Backend zu verbinden, ersetzt du die
+   Objekte unten durch API-Aufrufe, z. B.:
+
+     const res = await fetch("/api/polls/hoodie");
+     const data = await res.json();
+
+   Die Render-Funktionen in components.js übernehmen die Daten über
+   Parameter – sie kennen die Datenquelle nicht.
+   ========================================================================== */
+
+/* ==========================================================================
+   ECHTE STIMMEN · HIER DIE DATENBANK EINTRAGEN  (Supabase – kostenlos)
+   --------------------------------------------------------------------------
+   1. Projekt anlegen:   https://supabase.com   ->   "New project" (Free Tier)
+   2. Im SQL Editor den SQL-Block direkt unter diesem Bereich einmal ausfuehren
+   3. Settings -> API:   "Project URL" und den "anon public" Key hier eintragen.
+
+   Solange hier keine Werte stehen, laeuft die Seite im DEMO-MODUS: sie
+   funktioniert, zeigt aber die Beispielzahlen und weist sichtbar darauf hin.
+
+   Achtung: NUR den "anon public" Key eintragen. Ein "service_role"-Key darf
+   niemals im Browser-Code stehen.
+   ========================================================================== */
+window.VOTE_CONFIG = {
+  supabaseUrl: "https://sdioaqkqqlqlswuifxat.supabase.co",          // z. B. "https://abcdefghijklmnop.supabase.co"
+  supabaseKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNkaW9hcWtxcWxxbHN3dWlmeGF0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk2MzExNzQsImV4cCI6MjEwNTIwNzE3NH0.FfH6PvE_eHUg2zhW3Ws5Hwi31nCSrKLokT2Fhm23UX4",          // "anon public" Key aus Settings -> API
+  table: "votes",           // Tabellenname (siehe SQL unten)
+  refreshMs: 10000,         // Live-Abgleich alle 10 Sekunden
+  requestTimeoutMs: 8000
+};
+
+/* --------------------------------------------------------------------------
+   SQL fuer den Supabase SQL-Editor (einmal ausfuehren):
+
+   create table if not exists public.votes (
+     poll_id    text        not null,
+     voter_id   text        not null,   -- zufaellige Geraete-ID, kein Name
+     choice_id  text        not null,
+     updated_at timestamptz not null default now(),
+     primary key (poll_id, voter_id)    -- 1 Stimme pro Geraet, jederzeit aenderbar
+   );
+
+   alter table public.votes enable row level security;
+
+   create policy "votes_select" on public.votes for select using (true);
+   create policy "votes_insert" on public.votes for insert with check (true);
+   create policy "votes_update" on public.votes for update using (true) with check (true);
+
+   grant select, insert, update on public.votes to anon, authenticated;
+
+   create or replace function public.votes_touch() returns trigger
+   language plpgsql as $$
+   begin new.updated_at := now(); return new; end $$;
+
+   drop trigger if exists votes_touch_trg on public.votes;
+   create trigger votes_touch_trg before insert or update on public.votes
+     for each row execute function public.votes_touch();
+   -------------------------------------------------------------------------- */
+
+window.ABI_DATA = {
+
+  /* ------------------------------------------------------------------------
+   * Abstimmungen (Polls)
+   * endsAt     = Abstimmungsende (ISO-String mit Zeitzone)
+   * baseResults = Beispielwerte fuer den DEMO-MODUS. Sie werden NUR
+   *               angezeigt, solange in VOTE_CONFIG oben keine Datenbank
+   *               eingetragen ist. Sind URL + Key gesetzt, kommen alle Zahlen
+   *               live aus der Datenbank (Tabelle "votes").
+   * ---------------------------------------------------------------------- */
+  polls: [
+    {
+      id: "hoodie",
+      title: "Hoodie-Design",
+      question: "Welches Hoodie-Design soll unsere Stufe tragen?",
+      endsAt: "2027-03-31T23:59:59+02:00",
+      options: [
+        {
+          id: "h1",
+          name: "Purple Core",
+          tag: "Design 01",
+          tone: "purple",
+          desc: "Knalliger Purpur-Look mit farbigem Innenfutter und großem Stufen-Print auf der Brust."
+        },
+        {
+          id: "h2",
+          name: "Midnight",
+          tag: "Design 02",
+          tone: "midnight",
+          desc: "Dunkles, cleanes Design mit dezentem Glow-Print – für alle, die es schlicht mögen."
+        },
+        {
+          id: "h3",
+          name: "AK Classic",
+          tag: "Design 03",
+          tone: "classic",
+          desc: "Der zeitlose Klassiker: weißes Premium-Material, klassischer AK-Print – für immer."
+        }
+      ],
+      baseResults: { h1: 0, h2: 0, h3: 0 }
+    }
+  ],
+
+  /* ------------------------------------------------------------------------
+   * Sponsoren – Platzhalter. Später:
+   *   { name, initials, note, url, logo: "pfad/zum/logo.png" }
+   * Sofern ein Logo vorhanden ist, wird es automatisch statt der Initialen
+   * angezeigt (siehe Sponsorkarte in components.js).
+   * ---------------------------------------------------------------------- */
+sponsors: [
+  {
+    name: "Coca-Cola",
+    initials: "CC",
+    note: "Getränke-Sponsor für die Abschlussparty",
+    url: "#",
+
+    logo: "images/sponsor01.jpg"
+  },
+  {
+    name: "Fanta",
+    initials: "F",
+    note: "Erfrischungsgetränke für den Abschlussball",
+    url: "#",
+    logo: "images/sponsor02.jpg"
+  },
+  {
+    name: "Sprite",
+    initials: "S",
+    note: "Sponsor für unseren Weihnachtsmarkt-Stand",
+    url: "#",
+    logo: "images/sponsor03.jpg"
+  }
+],
+
+  /* ------------------------------------------------------------------------
+   * Events – Felder: name, date (ISO), time, category, location, description.
+   * image (URL) ist optional: Wird kein Bild angegeben (null), zeigt die
+   * Karte automatisch ein Platzhalter-Icon.
+   * ---------------------------------------------------------------------- */
+events: [
+  {
+    name: "Event 1 (Platzhalter)",
+    date: "2026-10-01",
+    time: "Uhrzeit folgt",
+    category: "Kategorie",
+    location: "Ort folgt",
+    description: "Platzhalter-Event – hier später Titel, Datum, Uhrzeit, Ort und Beschreibung eintragen.",
+    image: "images/event01.jpg"
+  },
+  {
+    name: "Event 2 (Platzhalter)",
+    date: "2026-12-01",
+    time: "Uhrzeit folgt",
+    category: "Kategorie",
+    location: "Ort folgt",
+    description: "Platzhalter-Event – hier später Titel, Datum, Uhrzeit, Ort und Beschreibung eintragen.",
+    image: "images/event02.jpg"
+  },
+  {
+    name: "Event 3 (Platzhalter)",
+    date: "2027-03-01",
+    time: "Uhrzeit folgt",
+    category: "Kategorie",
+    location: "Ort folgt",
+    description: "Platzhalter-Event – hier später Titel, Datum, Uhrzeit, Ort und Beschreibung eintragen.",
+    image: "images/event03.jpg"
+  },
+  {
+    name: "Event 4 (Platzhalter)",
+    date: "2027-06-01",
+    time: "Uhrzeit folgt",
+    category: "Kategorie",
+    location: "Ort folgt",
+    description: "Platzhalter-Event – hier später Titel, Datum, Uhrzeit, Ort und Beschreibung eintragen.",
+    image: "images/event04.jpg"
+  }
+],
+
+  /* ------------------------------------------------------------------------
+   * AK-Kasse
+   * ---------------------------------------------------------------------- */
+  kasse: {
+    goal: 10000,
+    current: 200,
+    note: "Stand: September 2026"
+  },
+
+  /* ------------------------------------------------------------------------
+   * Orga-Team – Jahrgang 2027
+   * ---------------------------------------------------------------------- */
+  team: [
+    { name: "Oliwia Siwek", role: "Projektleitung", initials: "OS", tone: 1 },
+    { name: "Lisa-Maria Schade", role: "Finanzen & Sponsoring", initials: "LS", tone: 2 },
+    { name: "Dmitrii Panfilov", role: "Design & Social Media", initials: "DP", tone: 3 },
+    { name: "Greta Steenken", role: "Design & Social Media", initials: "GS", tone: 4 },
+    { name: "Greta Steenken", role: "Events & Party", initials: "GS", tone: 2 }
+  ],
+
+  /* ------------------------------------------------------------------------
+   * Kontakt – Jahrgang 2027
+   * ---------------------------------------------------------------------- */
+  contact: {
+    email: "abschluss27.gymwerlte@gmail.com",
+    instagram: "@abschluss27.gymwerlte",
+    instagramUrl: "https://www.instagram.com/abschluss27.gymwerlte",
+    school: "Gymnasium Werlte, 49757 Werlte"
+  }
+};
+
+/* ==========================================================================
+   AuthService – Zugangskontrolle (vorbereitete Schnittstelle)
+   --------------------------------------------------------------------------
+   Aktueller Stand (Demo-Modus):
+   - Jeder Besucher erhält eine anonyme Geräte-ID (localStorage).
+   - Die Abstimmung läuft dadurch pro Gerät und ist KEINE echte
+     Personen-Kontrolle – das ist hier klar so dokumentiert.
+
+   Anbindung echter Zugangskontrolle (z. B. Schul-Login / SSO / E-Mail-Passwort):
+   1. isAuthenticated()  → prüft ein gültiges Session-Token
+   2. getUserId()        → gibt die echte Schüler-ID zurück statt der Geräte-ID
+   3. getUserId()        → darf keine erfundene ID zurückgeben
+
+   Die Durchsetzung „1 Stimme pro Person“ passiert zwingend SERVEREITIG
+   (die VotingService-Schicht ruft später ein Backend auf). Clientseitig
+   kann Zugriffskontrolle nur als UX-Absicherung dienen.
+   ========================================================================== */
+
+window.AuthService = (() => {
+  const KEY = "abi27:user";
+
+  function deviceId() {
+    let id = localStorage.getItem(KEY);
+    if (!id) {
+      id = "dev-" + Math.random().toString(36).slice(2, 10);
+      localStorage.setItem(KEY, id);
+    }
+    return id;
+  }
+
+  return {
+    /** Demo: Besucher gilt als angemeldet (anonym auf diesem Gerät). */
+    isAuthenticated() {
+      return true;
+    },
+
+    getUserId: deviceId,
+
+    getUserLabel() {
+      return "Demo-Nutzer:in (dieses Gerät)";
+    }
+  };
+})();
+
+/* ==========================================================================
+   VotingService \u2013 Abstimmungs-Logik (LIVE, mit Datenbank-Anbindung)
+   --------------------------------------------------------------------------
+   Garantierte Regeln:
+   - Eine Person/Geraet hat GENAU EINE aktive Stimme pro Abstimmung.
+   - Eine erneute Stimmabgabe ERSETZT die alte Wahl \u2013 es entsteht nie eine
+     zweite Stimme (Datenbank: Primary Key (poll_id, voter_id) + Upsert).
+   - Nach Ablauf des Abstimmungsdatums sind keine Stimmen mehr moeglich.
+
+   Speicher:
+   - Ist window.VOTE_CONFIG oben ausgefuellt, laufen alle Stimmen ueber die
+     Datenbank (Supabase / PostgREST) und werden live gezaehlt.
+   - Ist nichts eingetragen oder der Server nicht erreichbar, zeigt die Seite
+     die Demo-Werte an und kennzeichnet das sichtbar ("Demo-Modus" / "Offline").
+
+   Datenschutz: Es werden KEINE Namen uebertragen. Gespeichert wird nur die
+   poll_id, eine zufaellige Geraete-ID (voter_id) und die Design-Auswahl
+   (choice_id). Beim Zaehlen wird ausschliesslich choice_id ausgelesen.
+   ========================================================================== */
+
+window.VotingService = (() => {
+  const CFG = window.VOTE_CONFIG || {};
+  const MYVOTE_KEY = "abi27:myvote:v1";
+
+  /* Aktueller Stand \u2013 wird von refresh() gesetzt und von getResults()
+     synchron an die UI zurueckgegeben. */
+  let state = {
+    counts: {}, total: 0, rank: [], mine: null,
+    source: "demo",      // "live" | "demo" | "offline"
+    updatedAt: null, error: null
+  };
+
+  const isConfigured = () =>
+    !!(CFG.supabaseUrl && CFG.supabaseKey && /^https?:\/\//.test(CFG.supabaseUrl));
+
+  function endpoint(query) {
+    return CFG.supabaseUrl.replace(/\/+$/, "") + "/rest/v1/" + CFG.table + query;
+  }
+
+  function apiHeaders(extra) {
+    return Object.assign({
+      "apikey": CFG.supabaseKey,
+      "Authorization": "Bearer " + CFG.supabaseKey
+    }, extra || {});
+  }
+
+  async function request(url, options) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), CFG.requestTimeoutMs || 8000);
+    try {
+      return await fetch(url, Object.assign({ cache: "no-store", signal: ctrl.signal }, options));
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  /* Eigene Stimme lokal merken (nur die Design-ID, kein Personenbezug) */
+  function myVote() {
+    try { return localStorage.getItem(MYVOTE_KEY); } catch (e) { return null; }
+  }
+  function setMyVote(id) {
+    try {
+      if (id) localStorage.setItem(MYVOTE_KEY, id);
+      else localStorage.removeItem(MYVOTE_KEY);
+    } catch (e) {}
+  }
+
+  function isOpen(poll) {
+    return new Date(poll.endsAt).getTime() > Date.now();
+  }
+
+  function applyCounts(poll, counts, source, error) {
+    const c = {};
+    poll.options.forEach(o => {
+      const v = Number(counts[o.id]);
+      c[o.id] = Number.isFinite(v) && v > 0 ? v : 0;
+    });
+    const total = Object.values(c).reduce((a, b) => a + b, 0);
+    const rank = Object.entries(c).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
+    state = { counts: c, total, rank, mine: myVote(), source, updatedAt: new Date(), error: error || null };
+    return state;
+  }
+
+  /**
+   * Aktuellen Stand vom Server holen. Wird beim Laden, nach dem Abstimmen und
+   * im Intervall (siehe app.js) aufgerufen.
+   */
+  async function refresh(poll) {
+    if (!isConfigured()) {
+      const demo = Object.assign({}, poll.baseResults);
+      const mine = myVote();
+      return applyCounts(poll, demo, "demo", null);
+    }
+
+    try {
+      const res = await request(
+        endpoint("?poll_id=eq." + encodeURIComponent(poll.id) + "&select=choice_id"),
+        { headers: apiHeaders() }
+      );
+      if (!res.ok) throw new Error("HTTP " + res.status);
+
+      const rows = await res.json();
+      const counts = {};
+      rows.forEach(r => { counts[r.choice_id] = (counts[r.choice_id] || 0) + 1; });
+      return applyCounts(poll, counts, "live", null);
+    } catch (err) {
+      /* Verbindung weg: letzten Live-Stand behalten statt auf Demo-Werte zu springen */
+      const fallback = state.updatedAt ? state.counts : {};
+      return applyCounts(poll, fallback, "offline", err && err.message ? err.message : String(err));
+    }
+  }
+
+  /**
+   * Stimme abgeben oder aendern. Der Server macht ein echtes Upsert ueber den
+   * Primary Key (poll_id, voter_id) \u2013 dadurch entsteht nie eine zweite Stimme.
+   */
+  async function castVote(poll, choiceId) {
+    if (!isOpen(poll)) return { ok: false, message: "Die Abstimmung ist beendet." };
+    if (!poll.options.some(o => o.id === choiceId)) return { ok: false, message: "Ungueltige Auswahl." };
+
+    const previous = myVote();
+    if (previous === choiceId) {
+      return { ok: true, changed: false, unchanged: true, message: "Deine Stimme ist bereits gespeichert." };
+    }
+    const changed = previous != null;
+
+    setMyVote(choiceId);                                        // UI reagiert sofort
+    state = Object.assign({}, state, { mine: choiceId });
+
+    if (!isConfigured()) {
+      await refresh(poll);
+      return {
+        ok: true, demo: true, changed,
+        message: changed ? "Auswahl geaendert (wird gespeichert, sobald die Datenbank verbunden ist)."
+                         : "Auswahl gespeichert (wird gespeichert, sobald die Datenbank verbunden ist)."
+      };
+    }
+
+    try {
+      const res = await request(endpoint(""), {
+        method: "POST",
+        headers: apiHeaders({
+          "Content-Type": "application/json",
+          "Prefer": "resolution=merge-duplicates,return=minimal"
+        }),
+        body: JSON.stringify([{
+          poll_id: poll.id,
+          voter_id: AuthService.getUserId(),
+          choice_id: choiceId
+        }])
+      });
+      if (!res.ok) throw new Error("HTTP " + res.status + " " + (await res.text().catch(() => "")).slice(0, 200));
+
+      await refresh(poll);
+      return { ok: true, changed, message: changed ? "Deine Stimme wurde geaendert." : "Deine Stimme wurde gespeichert." };
+    } catch (err) {
+      setMyVote(previous);                                      // nicht gespeichert -> zuruecknehmen
+      await refresh(poll);
+      return { ok: false, message: "Stimme konnte nicht gespeichert werden \u2013 bitte spaeter erneut versuchen." };
+    }
+  }
+
+  function getResults(poll) {
+    if (!state.updatedAt) applyCounts(poll, poll.baseResults, "demo", null);
+    return state;
+  }
+
+  function getStatus() {
+    return {
+      source: state.source,
+      stamp: state.updatedAt ? state.updatedAt.getTime() : 0,
+      updatedAt: state.updatedAt,
+      error: state.error,
+      configured: isConfigured()
+    };
+  }
+
+  return {
+    isOpen,
+    isConfigured,
+    refresh,
+    castVote,
+    getResults,
+    getStatus,
+    getDeadline(poll) {
+      return poll.endsAt;
+    }
+  };
+})();
+
+/* ==========================================================================
+   AK 2027 · Gymnasium Werlte — COMPONENTS
+   --------------------------------------------------------------------------
+   Reine Render-Funktionen: Daten rein → HTML raus. Keine Datenquellen-Fest-
+   legung hier – die Daten kommen als Parameter (aus data.js bzw. später aus
+   einer API). Zum Austauschen der Hoodie-Mockups: Funktion hoodieSVG() unten
+   durch <img src="pfad/zum/mockup.png" alt="…"> ersetzen (Kommentar dort).
+   ========================================================================== */
+
+window.Components = (() => {
+  const MONTHS = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({
+      "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+    }[c]));
+  }
+
+  /* ----------------------------------------------------------------------
+   * Hoodie-Mockup (Platzhalter)
+   * AUSTAUSCHEN: ersetze die Rückgabe durch
+   *   <img class="hoodie-preview__svg" src="mockups/design-01.png"
+   *        alt="Hoodie-Design ‚Purple Core'">
+   * -------------------------------------------------------------------- */
+function hoodieSVG(option, uid) {
+
+  const mockups = {
+    h1: "images/mockup01.jpg",
+    h2: "images/mockup02.jpg",
+    h3: "images/mockup03.jpg"
+  };
+
+  const src = mockups[option.id];
+
+  return `
+    <div class="hoodie-preview">
+      <div class="hoodie-preview__bg"></div>
+
+      <span class="hoodie-preview__tag">${esc(option.tag)}</span>
+
+      <img
+        class="hoodie-preview__svg"
+        src="${src}"
+        alt="Hoodie-Design ${esc(option.name)}"
+      >
+    </div>
+  `;
+}
+  /* ----------------------------------------------------------------------
+   * Hoodie-Karte
+   * -------------------------------------------------------------------- */
+  function hoodieCard(poll, option, idx) {
+    const state = VotingService.getResults(poll);
+    const isMine = state.mine === option.id;
+    const uid = poll.id + idx;
+
+    return `
+    <article class="hoodie-card ${isMine ? "is-selected" : ""}" data-poll="${poll.id}" data-choice="${option.id}">
+      ${hoodieSVG(option, uid)}
+      <div class="hoodie-body">
+        <span class="hoodie-tag">${esc(option.tag)}</span>
+        <h3 class="hoodie-name">${esc(option.name)}</h3>
+        <p class="hoodie-desc">${esc(option.desc)}</p>
+        <div class="hoodie-foot">
+          ${isMine
+            ? `<span class="hoodie-chosen">
+                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="#121212"/><path d="M7.5 12.5l3 3 6-6.5" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                 Deine Wahl</span>`
+            : `<span></span>`}
+          <button class="btn btn--sm ${isMine ? "btn--voted" : "btn--violet"}" data-vote="${poll.id}" data-choice="${option.id}" ${VotingService.isOpen(poll) ? "" : "disabled"}>
+            ${isMine ? "Auswahl ändern" : "Abstimmen"}
+          </button>
+        </div>
+      </div>
+    </article>`;
+  }
+
+  /* ----------------------------------------------------------------------
+   * Status-Zeile: Live / Demo / Offline (ehrlich gekennzeichnet)
+   * -------------------------------------------------------------------- */
+  function statusInfo(open) {
+    const st = VotingService.getStatus();
+    const live = st.source === "live";
+    const time = st.updatedAt
+      ? st.updatedAt.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit", second: "2-digit" })
+      : "\u2013";
+
+    const badge = !open
+      ? { cls: " is-ended", txt: "Abstimmung beendet" }
+      : live
+        ? { cls: "", txt: "Live" }
+        : st.source === "offline"
+          ? { cls: " is-ended", txt: "Offline" }
+          : { cls: " is-ended", txt: "Noch keine Stimmen" };
+
+    const line = !open
+      ? "Endstand \u00b7 " + (st.updatedAt || new Date()).toLocaleDateString("de-DE")
+      : live
+        ? "Live aus der Datenbank \u00b7 zuletzt abgeglichen um " + time + " Uhr"
+        : st.source === "offline"
+          ? "Keine Verbindung zur Datenbank \u2013 letzter bekannter Stand"
+          : "Noch keine Stimmen abgegeben \u00b7 die Anzeige zeigt ausschlie\u00dflich echte, gespeicherte Stimmen";
+
+    return { live, badge, line };
+  }
+
+  /* ----------------------------------------------------------------------
+   * Ergebnis-Panel mit animierten Balken
+   * -------------------------------------------------------------------- */
+  function resultsPanel(poll, mount) {
+    const r = VotingService.getResults(poll);
+    const open = VotingService.isOpen(poll);
+    const total = r.total;
+    const leader = r.rank.length ? r.rank[0][0] : null;
+    const info = statusInfo(open);
+
+    const rows = r.rank.map(([id, count], i) => {
+      const opt = poll.options.find(o => o.id === id);
+      const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+      const isLead = i === 0;
+      return `
+      <div class="bar-row ${isLead ? "is-lead" : ""}" data-result-choice="${id}">
+        <div class="bar-row__top">
+          <div class="bar-row__label">
+            <span class="bar-row__rank">${i + 1}</span>
+            <span class="bar-row__name">${esc(opt.name)}</span>
+            ${isLead ? `<span class="bar-row__lead-tag">\u2605 Aktuell auf Platz 1</span>` : ""}
+          </div>
+          <span class="bar-row__pct" data-count="${pct}">0<small>%</small></span>
+        </div>
+        <div class="bar-track" role="img" aria-label="${esc(opt.name)}: ${pct} Prozent">
+          <div class="bar-fill" data-width="${pct}"></div>
+        </div>
+        <div class="bar-row__votes" style="font-size:.82rem;color:rgba(255,255,255,.45);margin-top:6px;">${count.toLocaleString("de-DE")} Stimmen</div>
+      </div>`;
+    }).join("");
+
+    mount.innerHTML = `
+    <div class="results reveal" id="results-${poll.id}">
+      <div class="results__head">
+        <h3 class="results__title">Aktuelle Ergebnisse &middot; ${esc(poll.title)}</h3>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <span class="live-badge${info.badge.cls}"><span class="dot"></span>${info.badge.txt}</span>
+          <span class="rank-chip"><span class="prize">\ud83c\udfc6</span> Platz 1: <span class="rank-chip__name">${leader ? esc(poll.options.find(o => o.id === leader).name) : "\u2013"}</span></span>
+        </div>
+      </div>
+      <div class="results__bars">${rows}</div>
+      <div class="results__foot">
+        <span class="results__total">${total === 0 ? "Noch keine Stimmen abgegeben &middot; sei die erste Stimme!" : total.toLocaleString("de-DE") + " Stimmen insgesamt &middot; "}${esc(info.line)}</span>
+        ${r.mine
+          ? `<span class="results__vote-status">Deine Stimme: ${esc(poll.options.find(o => o.id === r.mine).name)}</span>`
+          : `<span class="results__vote-status">Du hast noch nicht abgestimmt.</span>`}
+      </div>
+    </div>`;
+  }
+
+  /* ----------------------------------------------------------------------
+   * Live-Update des bestehenden Panels: Balken, Zahlen, Platz 1 und
+   * Reihenfolge werden nachgefuehrt, OHNE die Animationen neu zu starten.
+   * -------------------------------------------------------------------- */
+  function updateResultsPanel(poll) {
+    const root = document.getElementById("results-" + poll.id);
+    if (!root) return false;
+
+    const r = VotingService.getResults(poll);
+    const open = VotingService.isOpen(poll);
+    const total = r.total;
+    const bars = root.querySelector(".results__bars");
+    const info = statusInfo(open);
+
+    r.rank.forEach(([id, count], i) => {
+      const row = root.querySelector('.bar-row[data-result-choice="' + id + '"]');
+      if (!row) return;
+
+      const opt = poll.options.find(o => o.id === id);
+      const pct = total > 0 ? Math.round((count / total) * 100) : 0;
+      const isLead = i === 0;
+
+      row.classList.toggle("is-lead", isLead);
+      row.querySelector(".bar-row__rank").textContent = i + 1;
+
+      let tag = row.querySelector(".bar-row__lead-tag");
+      if (isLead && !tag) {
+        tag = document.createElement("span");
+        tag.className = "bar-row__lead-tag";
+        tag.textContent = "\u2605 Aktuell auf Platz 1";
+        row.querySelector(".bar-row__label").appendChild(tag);
+      } else if (!isLead && tag) {
+        tag.remove();
+      }
+
+      row.querySelector(".bar-row__pct").innerHTML = pct + "<small>%</small>";
+      const fill = row.querySelector(".bar-fill");
+      fill.dataset.width = pct;
+      fill.style.width = pct + "%";
+      row.querySelector(".bar-track").setAttribute("aria-label", opt.name + ": " + pct + " Prozent");
+      row.querySelector(".bar-row__votes").textContent = count.toLocaleString("de-DE") + " Stimmen";
+
+      bars.appendChild(row);   // neue Reihenfolge
+    });
+
+    const badge = root.querySelector(".live-badge");
+    badge.className = "live-badge" + info.badge.cls;
+    badge.innerHTML = '<span class="dot"></span>' + info.badge.txt;
+
+    root.querySelector(".rank-chip__name").textContent =
+      r.rank.length ? poll.options.find(o => o.id === r.rank[0][0]).name : "\u2013";
+
+    root.querySelector(".results__total").textContent =
+      total.toLocaleString("de-DE") + " Stimmen insgesamt \u00b7 " + info.line;
+
+    const statusEl = root.querySelector(".results__vote-status");
+    const mineName = r.mine ? (poll.options.find(o => o.id === r.mine) || {}).name : null;
+    if (statusEl) statusEl.textContent = mineName ? "Deine Stimme: " + mineName : "Du hast noch nicht abgestimmt.";
+
+    return true;
+  }
+
+  /* ----------------------------------------------------------------------
+   * Events
+   * -------------------------------------------------------------------- */
+  function eventCard(ev, isNext, idx) {
+    const d = new Date(ev.date + "T00:00:00");
+
+    const meta = [];
+    if (ev.time) meta.push({ icon: "time", text: ev.time });
+    if (ev.location) meta.push({ icon: "pin", text: ev.location });
+
+    const icon = n => n === "time"
+      ? `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>`
+      : `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-5.1-7-11a7 7 0 0 1 14 0c0 5.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/></svg>`;
+
+    return `
+    <article class="event-card ${isNext ? "is-next" : ""}" data-event="${idx}">
+      <div class="event-card__row" tabindex="0" role="button" aria-expanded="false" aria-controls="ev-desc-${idx}">
+        <div class="event-date">
+          <span class="event-date__day">${String(d.getDate()).padStart(2, "0")}</span>
+          <span class="event-date__month">${MONTHS[d.getMonth()]}</span>
+          <span class="event-date__year">${d.getFullYear()}</span>
+        </div>
+        <div class="event-thumb">
+          ${ev.image
+            ? `<img src="${esc(ev.image)}" alt="Bild zu ${esc(ev.name)}">`
+            : `<svg class="event-thumb__icon" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.5"/><path d="M21 15l-5-5-9 9"/></svg>`}
+        </div>
+        <div class="event-info">
+          <div class="event-info__top">
+            <span class="event-cat">${esc(ev.category)}</span>
+            ${isNext ? `<span class="event-next-tag">Als Nächstes</span>` : ""}
+          </div>
+          <h3 class="event-name">${esc(ev.name)}</h3>
+          <div class="event-meta">
+            ${meta.map(m => `<span>${icon(m.icon)} ${esc(m.text)}</span>`).join("")}
+          </div>
+        </div>
+        <span class="event-toggle">
+          <span class="event-toggle__icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </span>
+          Mehr erfahren
+        </span>
+      </div>
+      <div class="event-desc-wrap" id="ev-desc-${idx}">
+        <div class="event-desc-inner">
+          <p class="event-desc">${esc(ev.description)}</p>
+        </div>
+      </div>
+    </article>`;
+  }
+
+  function eventsList(events) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    let nextIdx = -1;
+    for (let i = 0; i < events.length; i++) {
+      if (new Date(events[i].date + "T00:00:00") >= today) { nextIdx = i; break; }
+    }
+    return events.map((ev, i) => eventCard(ev, i === nextIdx, i)).join("");
+  }
+
+  /* ----------------------------------------------------------------------
+   * Sponsoren
+   * -------------------------------------------------------------------- */
+  function sponsorCard(s, idx) {
+    return `
+    <a class="sponsor-card" href="${esc(s.url)}" ${s.url === "#" ? 'aria-disabled="true"' : ""}>
+      <div class="sponsor-logo">
+        ${s.logo ? `<img src="${esc(s.logo)}" alt="Logo ${esc(s.name)}">` : `<span class="sponsor-logo__initials">${esc(s.initials)}</span>`}
+      </div>
+      <h3 class="sponsor-name">${esc(s.name)}</h3>
+      <p class="sponsor-note">${esc(s.note)}</p>
+      <span class="sponsor-url u-link">Website öffnen &rarr;</span>
+    </a>`;
+  }
+
+  /* ----------------------------------------------------------------------
+   * AK-Kasse
+   * -------------------------------------------------------------------- */
+  function kassePanel(k) {
+    const pct = k.goal > 0 ? Math.min(100, Math.round((k.current / k.goal) * 100)) : 0;
+    return `
+    <div class="kasse-panel reveal">
+      <div class="kasse-panel__inner">
+        <div class="kasse-panel__top">
+          <div>
+            <p class="kasse-label">Aktueller Stand der AK-Kasse</p>
+            <p class="kasse-sum" data-count="${k.current}" data-prefix="">0<small>&nbsp;€</small></p>
+            <p class="kasse-goal">von <strong>${k.goal.toLocaleString("de-DE")} €</strong> Ziel</p>
+          </div>
+          <div style="text-align:right;">
+            <p class="kasse-label">${pct} % erreicht</p>
+            <p style="margin-top:6px;" class="kasse-goal">Jede Spende zählt –<br>auch kleine Beträge.</p>
+          </div>
+        </div>
+        <div class="kasse-bar" role="img" aria-label="AK-Kasse: ${pct} Prozent erreicht">
+          <div class="kasse-fill" data-width="${pct}"></div>
+        </div>
+        <p class="kasse-hint">${esc(k.note)}</p>
+      </div>
+    </div>`;
+  }
+
+  /* ----------------------------------------------------------------------
+   * Team / Kontakt
+   * -------------------------------------------------------------------- */
+  function teamCard(m) {
+    return `
+    <div class="team-card">
+      <div class="team-avatar team-tone-${m.tone}">${esc(m.initials)}</div>
+      <h3 class="team-name">${esc(m.name)}</h3>
+      <p class="team-role">${esc(m.role)}</p>
+      <a class="team-ig" href="https://www.instagram.com/abschluss27.gymwerlte" target="_blank" rel="noopener" aria-label="Instagram von ${esc(m.name)}">@abschluss27.gymwerlte</a>
+    </div>`;
+  }
+
+  function contactCard(c, idx) {
+    const items = [
+      {
+        h: "E-Mail",
+        p: "Für Sponsoring, Presse und alle organisatorischen Fragen.",
+        a: c.email, href: "mailto:" + c.email
+      },
+      {
+        h: "Instagram",
+        p: "Alle Infos, Updates und Behind-the-scenes aus dem Orga-Team.",
+        a: c.instagram, href: c.instagramUrl
+      },
+      {
+        h: "Schule",
+        p: "Das Gymnasium Werlte – unsere zweite Heimat für 8 Jahre.",
+        a: c.school, href: "#"
+      }
+    ][idx];
+    return `
+    <div class="contact-card">
+      <div class="contact-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          ${idx === 0 ? '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="M3.5 7l8.5 6 8.5-6"/>' : ""}
+          ${idx === 1 ? '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor" stroke="none"/>' : ""}
+          ${idx === 2 ? '<path d="M12 21s-7-5.1-7-11a7 7 0 0 1 14 0c0 5.9-7 11-7 11z"/><circle cx="12" cy="10" r="2.6"/>' : ""}
+        </svg>
+      </div>
+      <h3 class="contact-card__h">${items.h}</h3>
+      <p class="contact-card__p">${items.p}</p>
+      <a class="contact-card__a u-link" href="${items.href}">${esc(items.a)}</a>
+    </div>`;
+  }
+
+  return { hoodieCard, resultsPanel, updateResultsPanel, eventsList, sponsorCard, kassePanel, teamCard, contactCard };
+})();
+
+/* ==========================================================================
+   AK 2027 · Gymnasium Werlte — APP (Bootstrapping & Interaktion)
+   --------------------------------------------------------------------------
+   - Rendert alle Sektionen aus den Mock-Daten
+   - Navigation (Scrolled-Zustand, Burger, aktive Sektion)
+   - Countdown (datumsgesteuert)
+   - Abstimmungs-Interaktion (ein Klick-Handler, Event-Delegation)
+   - Reveal-Animationen & Zähler
+   ========================================================================== */
+
+(() => {
+  "use strict";
+
+  const $ = s => document.querySelector(s);
+  const RM = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const DATA = window.ABI_DATA;
+
+  const pollById = id => DATA.polls.find(p => p.id === id);
+
+  /* ---------------- Toast ---------------- */
+  let toastTimer;
+  function toast(title, sub) {
+    $("#toast-title").textContent = title;
+    $("#toast-sub").textContent = sub || "";
+    const t = $("#toast");
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 3600);
+  }
+
+  /* ---------------- Render ---------------- */
+  function renderHoodies() {
+    const poll = pollById("hoodie");
+    const grid = $("#hoodie-grid");
+    grid.innerHTML = poll.options.map((o, i) => Components.hoodieCard(poll, o, i)).join("");
+    grid.className = "vote-grid reveal in";
+
+    const r = VotingService.getResults(poll);
+    const note = $("#vote-note");
+    if (r.mine) {
+      const name = poll.options.find(o => o.id === r.mine).name;
+      note.innerHTML = `✅ Du hast f&uuml;r <strong>„${name}"</strong> abgestimmt. Du kannst deine Auswahl bis zum Ende der Abstimmung jederzeit &auml;ndern.`;
+      note.classList.add("show");
+    } else {
+      note.classList.remove("show");
+    }
+  }
+
+  function renderResults() {
+    DATA.polls.forEach(p => {
+      const mount = p.id === "hoodie" ? $("#results-mount") : $("#results-" + p.id);
+      if (!mount) return;
+
+      if (document.getElementById("results-" + p.id)) {
+        Components.updateResultsPanel(p);              // Live-Update in-place
+      } else {
+        Components.resultsPanel(p, mount);             // Erst-Rendering inkl. Animation
+        requestAnimationFrame(() => {
+          mount.querySelectorAll(".bar-fill").forEach(f => (f.style.width = f.dataset.width + "%"));
+          runCounters();
+        });
+        watchReveals(mount);
+      }
+    });
+  }
+
+  function renderEvents() {
+    $("#event-list").innerHTML = Components.eventsList(DATA.events);
+  }
+
+  function renderSponsors() {
+    $("#sponsor-grid").innerHTML = DATA.sponsors.map((s, i) => Components.sponsorCard(s, i)).join("");
+  }
+
+  function renderKasse() {
+    $("#kasse-mount").innerHTML = Components.kassePanel(DATA.kasse);
+    requestAnimationFrame(() => {
+      const fill = document.querySelector(".kasse-fill");
+      if (fill) fill.style.width = fill.dataset.width + "%";
+      runCounters();
+    });
+  }
+
+  function renderTeam()   { $("#team-grid").innerHTML   = DATA.team.map(m => Components.teamCard(m)).join(""); }
+  function renderContact() {
+    $("#contact-grid").innerHTML = DATA.contact ? [0, 1, 2].map(i => Components.contactCard(DATA.contact, i)).join("") : "";
+  }
+
+  /* ---------------- Zähler-Animation ---------------- */
+  function runCounters() {
+    document.querySelectorAll("[data-count]").forEach(el => {
+      if (el.dataset.done) return;
+      el.dataset.done = "1";
+      const target = +el.dataset.count;
+      const prefix = el.dataset.prefix || "";
+      const suffix = el.dataset.suffix || "";
+      if (RM) { el.textContent = prefix + target.toLocaleString("de-DE") + suffix; return; }
+      const dur = 1300, t0 = performance.now();
+      const fmt = v => {
+        const sv = el.querySelector("small");
+        const txt = prefix + Math.round(v).toLocaleString("de-DE");
+        if (sv) { sv.textContent = sv.textContent; el.innerHTML = txt + sv.outerHTML; }
+        else el.textContent = txt;
+      };
+      (function step(now) {
+        const p = Math.min(1, (now - t0) / dur);
+        const eased = 1 - Math.pow(1 - p, 3);
+        fmt(target * eased);
+        if (p < 1) requestAnimationFrame(step);
+      })(t0);
+      // kleines % anfügen (bar-row__pct nutzt <small>)
+      const small = el.querySelector("small");
+      if (small) { /* bleibt via innerHTML erhalten */ }
+    });
+  }
+
+  /* ---------------- Abstimmung (Event-Delegation) ---------------- */
+  document.addEventListener("click", async e => {
+    const btn = e.target.closest("[data-vote]");
+    if (!btn || btn.disabled || btn.dataset.busy === "1") return;
+
+    const poll = pollById(btn.dataset.vote);
+    if (!poll) return;
+
+    btn.dataset.busy = "1";
+    btn.disabled = true;
+
+    const res = await VotingService.castVote(poll, btn.dataset.choice);
+    delete btn.dataset.busy;
+
+    renderHoodies();
+    renderResults();
+
+    if (!res.ok) { toast("Hinweis", res.message); return; }
+
+    toast(res.message, res.demo
+      ? "Sobald die Datenbank verbunden ist, werden die Stimmen echt gezaehlt."
+      : "Du kannst deine Auswahl jederzeit aendern.");
+
+    const selCard = document.querySelector(`[data-poll="${btn.dataset.vote}"][data-choice="${btn.dataset.choice}"]`);
+    if (selCard) {
+      selCard.classList.remove("is-selected");
+      void selCard.offsetWidth;
+      selCard.classList.add("is-selected");
+      selCard.scrollIntoView({ behavior: RM ? "auto" : "smooth", block: "nearest" });
+    }
+  });
+
+  /* ---------------- Events: Accordion ---------------- */
+  function toggleEvent(card) {
+    const open = card.classList.toggle("is-open");
+    card.querySelector(".event-card__row").setAttribute("aria-expanded", String(open));
+  }
+  document.addEventListener("click", e => {
+    const row = e.target.closest(".event-card__row");
+    if (row) { e.preventDefault(); toggleEvent(row.closest(".event-card")); }
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const row = e.target.closest(".event-card__row");
+    if (row) { e.preventDefault(); toggleEvent(row.closest(".event-card")); }
+  });
+
+  /* ---------------- Countdown ---------------- */
+  const COUNTDOWN_END = pollById("hoodie").endsAt;
+  let __endedOnce = false;
+
+  function tick() {
+    const diff = new Date(COUNTDOWN_END).getTime() - Date.now();
+    const ended = diff <= 0;
+    $("#countdown-ended").hidden = !ended;
+    $("#countdown-tiles").style.display = ended ? "none" : "";
+    if (ended) {
+      if (!__endedOnce) { __endedOnce = true; renderHoodies(); renderResults(); }
+      return;
+    }
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor(diff / 3600000) % 24;
+    const m = Math.floor(diff / 60000) % 60;
+    const s = Math.floor(diff / 1000) % 60;
+    const set = (id, v) => { const el = $("#" + id); if (el && el.textContent !== String(v).padStart(2, "0")) el.textContent = String(v).padStart(2, "0"); };
+    set("cd-days", d); set("cd-hours", h); set("cd-mins", m); set("cd-secs", s);
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  /* ---------------- Navigation ---------------- */
+  const nav = $("#nav");
+  const burger = $("#nav-burger");
+
+  function onScroll() {
+    nav.classList.toggle("nav--scrolled", window.scrollY > 40);
+    const doc = document.documentElement;
+    const p = window.scrollY / (doc.scrollHeight - doc.clientHeight || 1);
+    document.querySelector(".progress")?.style.setProperty("transform", `scaleX(${Math.min(1, p)})`);
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  burger.addEventListener("click", () => {
+    const open = nav.classList.toggle("nav--open");
+    burger.setAttribute("aria-expanded", String(open));
+    document.body.classList.toggle("menu-open", open);
+  });
+
+  document.querySelectorAll(".nav__links a").forEach(a =>
+    a.addEventListener("click", () => {
+      nav.classList.remove("nav--open");
+      burger.setAttribute("aria-expanded", "false");
+      document.body.classList.remove("menu-open");
+    })
+  );
+
+  // Aktive Sektion markieren
+  const linkBySection = {};
+  document.querySelectorAll(".nav__links .nav__link[href^='#']").forEach(a => {
+    const id = a.getAttribute("href").slice(1);
+    linkBySection[id] = a;
+  });
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      Object.values(linkBySection).forEach(a => a.classList.remove("is-active"));
+      const link = linkBySection[en.target.id];
+      if (link) link.classList.add("is-active");
+    });
+  }, { rootMargin: "-40% 0px -55% 0px" });
+  Object.keys(linkBySection).forEach(id => {
+    const sec = document.getElementById(id);
+    if (sec) io.observe(sec);
+  });
+
+  /* ---------------- Reveal-Animationen ---------------- */
+  const revealIO = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) { en.target.classList.add("in"); revealIO.unobserve(en.target); }
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+
+  function watchReveals(root) {
+    root.querySelectorAll(".reveal:not(.in)").forEach(el => revealIO.observe(el));
+  }
+
+  // Hero-Entrance
+  window.addEventListener("load", () => {
+    setTimeout(() => document.querySelectorAll(".hero .anim").forEach(el => el.classList.add("in")), 60);
+  });
+  if (document.readyState === "complete") {
+    document.querySelectorAll(".hero .anim").forEach(el => el.classList.add("in"));
+  } else {
+    window.addEventListener("load", () => document.querySelectorAll(".hero .anim").forEach(el => el.classList.add("in")));
+  }
+
+  /* ---------------- Boot & Live-Abgleich ---------------- */
+  // Scroll-Progress-Bar einfuegen
+  const prog = document.createElement("div");
+  prog.className = "progress";
+  document.body.prepend(prog);
+
+  const HOODIE = pollById("hoodie");
+
+  // Statische Sektionen
+  renderEvents();
+  renderSponsors();
+  renderKasse();
+  renderTeam();
+  renderContact();
+
+  // Voting: sofort anzeigen (Demo-Werte) und dann live nachladen
+  renderHoodies();
+  renderResults();
+
+  (async () => {
+    await VotingService.refresh(HOODIE);
+    renderHoodies();
+    renderResults();
+
+    const every = (window.VOTE_CONFIG && window.VOTE_CONFIG.refreshMs) || 10000;
+
+    async function liveTick() {
+      if (document.hidden) return;                 // im Hintergrund nicht pollen
+      await VotingService.refresh(HOODIE);
+      renderResults();
+    }
+
+    setInterval(liveTick, every);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) liveTick(); });
+  })();
+
+  watchReveals(document.body);
+})();
+
+</script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","spa":2}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","spa":2}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
